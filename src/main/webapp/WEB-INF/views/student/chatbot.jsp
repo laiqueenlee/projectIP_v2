@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,63 +15,66 @@
             box-sizing: border-box;
         }
 
-        /* match .btn / .btn-ghost styling used on home.jsp */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
-            border: 1px solid transparent;
-            background: transparent;
-            color: inherit;
-        }
-
-        .btn-ghost {
-            background: #fff;
-            color: #065f46;
-            border: 1px solid #cceee6;
-            box-shadow: 0 1px 0 rgba(0,0,0,0.02);
-            padding: 8px 14px;
-        }
-
-        .btn-ghost:hover,
-        .btn-ghost:focus {
-            background: #f0fdfa;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(6,95,70,0.08);
-            outline: none;
-            text-decoration: none;
-        }
-
-        .btn-ghost:focus {
-            box-shadow: 0 0 0 3px rgba(99,179,155,0.15);
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background-color: #f9fafb;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8fafb; /* MindWell light grey background */
             height: 100vh;
             display: flex;
             flex-direction: column;
+            color: #1a1a1a;
         }
 
-        .header {
+        /* --- Header Styling (Fixed Layout) --- */
+        .page-header-strip {
             background-color: #fff;
-            padding: 12px 30px;
             border-bottom: 1px solid #e5e7eb;
+            width: 100%;
         }
 
-        .header h1 {
-            font-size: 20px;
+        .header-inner-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .header-title p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        /* --- Button Styling --- */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            color: #666;
             font-weight: 600;
-            color: #1f2937;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
+        .btn-back:hover {
+            border-color: #5dd5c3; /* MindWell Teal */
+            color: #5dd5c3;
+            transform: translateY(-1px);
+        }
+
+        /* --- Chat Layout --- */
         .chat-container {
             flex: 1;
             display: flex;
@@ -78,36 +82,43 @@
             max-width: 900px;
             width: 100%;
             margin: 0 auto;
-            padding: 20px 20px;
+            padding: 24px 20px 0 20px; /* Added top padding */
             min-height: 0;
         }
 
         .assistant-header {
-            background-color: #f3f4f6;
+            background-color: #fff; /* Changed to white for card look */
             border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 12px 16px;
+            border-radius: 12px;
+            padding: 16px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .assistant-icon {
-            font-size: 18px;
+            font-size: 24px;
+            background: #e0f7f4;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .assistant-info h2 {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 2px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
         }
 
         .assistant-info p {
-            font-size: 12px;
-            color: #6b7280;
+            font-size: 13px;
+            color: #666;
         }
 
         .chat-box {
@@ -116,92 +127,85 @@
             flex-direction: column;
             min-height: 0;
             overflow-y: auto;
+            padding-bottom: 20px;
         }
 
-        .chat-box::-webkit-scrollbar {
-            width: 6px;
-        }
+        /* Scrollbar Styling */
+        .chat-box::-webkit-scrollbar { width: 6px; }
+        .chat-box::-webkit-scrollbar-track { background: transparent; }
+        .chat-box::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
 
-        .chat-box::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        .chat-box::-webkit-scrollbar-thumb {
-            background: #d1d5db;
-            border-radius: 3px;
-        }
-
-        .chat-box::-webkit-scrollbar-thumb:hover {
-            background: #9ca3af;
-        }
-
+        /* Empty State */
         .empty-state {
             text-align: center;
-            max-width: 400px;
             margin: auto;
+            padding: 40px;
         }
 
-        .empty-icon {
-            font-size: 40px;
-            color: #d1d5db;
-            margin-bottom: 12px;
-        }
-
+        .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+        
         .empty-text {
-            font-size: 14px;
-            color: #6b7280;
-            margin-bottom: 16px;
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 24px;
         }
 
         .suggestion {
-            background-color: #f9fafb;
+            background-color: white;
             border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-size: 13px;
-            color: #374151;
+            border-radius: 24px; /* Pill shape */
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #1a1a1a;
             cursor: pointer;
             transition: all 0.2s;
-            text-align: left;
+            display: inline-block;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .suggestion:hover {
-            background-color: #f3f4f6;
-            border-color: #d1d5db;
+            border-color: #5dd5c3;
+            color: #5dd5c3;
         }
 
+        /* Messages */
         .chat-message {
-            padding: 10px 14px;
-            margin-bottom: 10px;
-            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border-radius: 12px;
             max-width: 80%;
-            word-wrap: break-word;
-            font-size: 14px;
+            font-size: 15px;
             line-height: 1.5;
         }
 
         .bot-message {
-            background-color: #f3f4f6;
+            background-color: #fff;
+            border: 1px solid #e5e7eb;
             align-self: flex-start;
             color: #1f2937;
+            border-bottom-left-radius: 2px;
         }
 
         .user-message {
-            background-color: #3b82f6;
+            background-color: #5dd5c3; /* MindWell Teal */
             color: white;
             align-self: flex-end;
+            border-bottom-right-radius: 2px;
+            box-shadow: 0 1px 2px rgba(93, 213, 195, 0.3);
         }
 
+        /* Input Area */
         .input-container {
-            padding: 15px 20px;
             background-color: #fff;
             border-top: 1px solid #e5e7eb;
+            padding: 20px 0;
             flex-shrink: 0;
         }
 
         .input-wrapper {
             max-width: 900px;
             margin: 0 auto;
+            padding: 0 20px;
             display: flex;
             gap: 12px;
             align-items: center;
@@ -209,55 +213,53 @@
 
         .input-box {
             flex: 1;
-            padding: 12px 16px;
+            padding: 14px 20px;
             border-radius: 24px;
             border: 1px solid #e5e7eb;
-            font-size: 14px;
+            font-size: 15px;
             outline: none;
-            transition: border-color 0.2s;
+            background-color: #f9fafb;
+            transition: all 0.2s;
         }
 
         .input-box:focus {
-            border-color: #3b82f6;
+            border-color: #5dd5c3;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(93, 213, 195, 0.1);
         }
 
         .send-button {
-            background-color: #d1fae5;
-            color: #065f46;
+            background-color: #5dd5c3;
+            color: white;
             border: none;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background-color 0.2s;
+            box-shadow: 0 2px 4px rgba(93, 213, 195, 0.3);
         }
 
         .send-button:hover {
-            background-color: #a7f3d0;
-        }
-
-        .send-button:disabled {
-            background-color: #e5e7eb;
-            color: #9ca3af;
-            cursor: not-allowed;
+            background-color: #4cc4b3;
+            transform: translateY(-1px);
         }
 
         .messages-area {
             display: none;
             flex-direction: column;
             width: 100%;
-            padding: 10px 0;
         }
 
-        .messages-area.active {
-            display: flex;
-        }
+        .messages-area.active { display: flex; }
     </style>
 </head>
 <body>
+    <%@ include file="/WEB-INF/views/includes/navbar.jsp" %>
+    
     <c:choose>
         <c:when test="${not empty loggedInUser.fullName}">
             <c:set var="displayName" value="${loggedInUser.fullName}"/>
@@ -267,11 +269,15 @@
         </c:otherwise>
     </c:choose>
 
-    <div class="header">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-            <h1 style="margin:0 0 0 12px">Hello, <c:out value="${displayName}" default="Alex"/></h1>
-            <a href="#" class="btn btn-ghost" aria-label="Go back" onclick="if(history.length>1){ history.back(); } else { window.location.href='${pageContext.request.contextPath}/'; } return false;">← Back</a>
+    <div class="page-header-strip">
+        <div class="header-inner-container">
+            <div class="header-title">
+                <h1>Hello, <c:out value="${displayName}" default="Student"/></h1>
+                </div>
             
+            <a href="#" class="btn-back" onclick="if(history.length>1){ history.back(); } else { window.location.href='${pageContext.request.contextPath}/'; } return false;">
+                ← Back
+            </a>
         </div>
     </div>
 
@@ -294,8 +300,7 @@
             </div>
 
             <div class="messages-area" id="messagesArea">
-                <!-- Messages will appear here -->
-            </div>
+                </div>
         </div>
     </div>
 
@@ -303,8 +308,9 @@
         <div class="input-wrapper">
             <input type="text" class="input-box" id="userMessage" placeholder="Type your message...">
             <button class="send-button" id="sendButton" onclick="sendMessage()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                 </svg>
             </button>
         </div>
@@ -324,48 +330,41 @@
             var messagesArea = document.getElementById("messagesArea");
             var chatBox = document.getElementById("chatBox");
 
-            // Hide empty state and show messages area
             if (emptyState.style.display !== "none") {
                 emptyState.style.display = "none";
                 messagesArea.classList.add("active");
             }
 
-            // Display user message
+            // User Message
             var userDiv = document.createElement("div");
             userDiv.classList.add("chat-message", "user-message");
             userDiv.textContent = userMessage;
             messagesArea.appendChild(userDiv);
 
-            // Scroll to the bottom
             chatBox.scrollTop = chatBox.scrollHeight;
-
-            // Clear the input box
             document.getElementById("userMessage").value = "";
 
-            // Simulate typing indicator
+            // Typing Indicator
             var typingDiv = document.createElement("div");
             typingDiv.classList.add("chat-message", "bot-message");
             typingDiv.id = "typingIndicator";
+            typingDiv.style.fontStyle = "italic";
+            typingDiv.style.color = "#999";
             typingDiv.textContent = "AI is typing...";
             messagesArea.appendChild(typingDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Simulate bot response
+            // Bot Response Simulation
             setTimeout(function() {
-                // Remove typing indicator
                 var indicator = document.getElementById("typingIndicator");
-                if (indicator) {
-                    indicator.remove();
-                }
+                if (indicator) indicator.remove();
 
                 var botResponse = getBotResponse(userMessage);
-
                 var botDiv = document.createElement("div");
                 botDiv.classList.add("chat-message", "bot-message");
                 botDiv.textContent = botResponse;
                 messagesArea.appendChild(botDiv);
 
-                // Scroll to the bottom
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 1500);
         }
@@ -374,21 +373,18 @@
             message = message.toLowerCase();
             
             if (message.includes("stress")) {
-                return "Managing stress is important for your mental health. Here are some techniques: practice deep breathing exercises, maintain a regular sleep schedule, engage in physical activity, and consider mindfulness meditation. Would you like more specific guidance on any of these techniques?";
+                return "Managing stress is important. Try deep breathing, regular sleep, physical activity, and mindfulness. Would you like details on any of these?";
             } else if (message.includes("anxiety")) {
-                return "I understand dealing with anxiety can be challenging. Some helpful strategies include: grounding techniques like the 5-4-3-2-1 method, progressive muscle relaxation, regular exercise, and talking to someone you trust. If anxiety persists, consider reaching out to a mental health professional.";
+                return "For anxiety, grounding techniques (5-4-3-2-1), muscle relaxation, and talking to someone you trust can help significantly.";
             } else if (message.includes("sleep")) {
-                return "Good sleep hygiene is crucial for mental health. Try establishing a consistent bedtime routine, avoiding screens before bed, keeping your bedroom cool and dark, and limiting caffeine in the afternoon. How has your sleep been lately?";
-            } else if (message.includes("depression") || message.includes("sad")) {
-                return "I'm sorry you're feeling this way. Depression is a serious condition, but there are ways to help manage it. Consider talking to a mental health professional, maintaining social connections, exercising regularly, and establishing a daily routine. Remember, it's okay to ask for help.";
-            } else if (message.includes("meditation") || message.includes("mindfulness")) {
-                return "Mindfulness and meditation are excellent practices for mental well-being. Start with just 5 minutes a day: find a quiet space, focus on your breathing, and gently bring your attention back when your mind wanders. Apps like Headspace or Calm can guide you through the process.";
+                return "Good sleep hygiene involves a routine, cool room, and no screens before bed. How has your sleep been lately?";
+            } else if (message.includes("sad") || message.includes("depress")) {
+                return "I'm sorry you feel this way. Maintaining routine, exercise, and social connection helps. Please consider talking to a professional if it persists.";
             } else {
-                return "Thank you for sharing. I'm here to support you with mental health guidance. You can ask me about stress management, anxiety coping strategies, sleep improvement, mindfulness practices, or any other mental health topics you'd like to discuss.";
+                return "I'm here to support you. Ask me about stress, anxiety, sleep, mindfulness, or anything on your mind.";
             }
         }
 
-        // Allow sending message with Enter key
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById("userMessage").addEventListener("keypress", function(event) {
                 if (event.key === "Enter") {
@@ -398,6 +394,5 @@
             });
         });
     </script>
-
 </body>
 </html>
