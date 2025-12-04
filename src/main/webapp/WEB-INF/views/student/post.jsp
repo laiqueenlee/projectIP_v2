@@ -1,11 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Managing exam stress - Peer Support Forum</title>
+    <title><c:out value="${post.title}"/> - Peer Support Forum</title>
     <style>
         * {
             margin: 0;
@@ -15,64 +15,63 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f0f2f5;
+            background-color: #f5f5f5;
             color: #333;
             line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px;
         }
 
         .header {
-            background-color: transparent;
-            padding: 0;
-            margin-bottom: 30px;
-            box-shadow: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .header h1 {
-            font-size: 36px;
+            font-size: 28px;
             margin-bottom: 8px;
             color: #1a1a1a;
-            font-weight: 700;
         }
 
         .header p {
-            color: #6b7280;
-            font-size: 16px;
+            color: #666;
+            font-size: 14px;
         }
 
+        /* --- Post Card Styles --- */
         .post-card {
             background-color: white;
-            border-radius: 12px;
-            padding: 30px;
+            border-radius: 8px;
+            padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .post-header {
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
         .avatar {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #5eead4 0%, #22d3ee 100%);
+            background-color: #22d3ee;
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            margin-right: 16px;
+            margin-right: 12px;
             flex-shrink: 0;
-            font-size: 18px;
         }
 
         .post-meta {
@@ -80,72 +79,115 @@
         }
 
         .post-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
-            color: #111827;
-            margin-bottom: 8px;
-            line-height: 1.4;
+            color: #1a1a1a;
+            margin-bottom: 4px;
         }
 
         .post-info {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #6b7280;
-            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 13px;
+            color: #666;
         }
 
         .badge {
-            background-color: #d1fae5;
-            color: #065f46;
-            padding: 4px 12px;
-            border-radius: 16px;
+            background-color: #dbeafe;
+            color: #1e40af;
+            padding: 2px 8px;
+            border-radius: 12px;
             font-size: 11px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .post-content {
             color: #4b5563;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-size: 15px;
-            line-height: 1.6;
         }
 
         .post-stats {
             display: flex;
-            gap: 24px;
-            padding-top: 16px;
-            border-top: 1px solid #f3f4f6;
+            gap: 20px;
+            padding-top: 12px;
+            border-top: 1px solid #e5e7eb;
             font-size: 14px;
-            color: #6b7280;
+            color: #666;
         }
 
         .stat {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 500;
+            gap: 6px;
         }
 
+        /* --- NEW: Reply Form Styles --- */
+        .reply-form-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .reply-form-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .reply-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .reply-textarea:focus {
+            border-color: #22d3ee;
+        }
+
+        .submit-btn {
+            background-color: #22d3ee;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #06b6d4;
+        }
+
+        /* --- Existing Reply List Styles --- */
         .replies-section {
             background-color: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .reply {
-            padding: 24px 0;
-            border-bottom: 1px solid #f3f4f6;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .reply:last-child {
             border-bottom: none;
-            padding-bottom: 0;
         }
 
         .reply-header {
@@ -155,17 +197,17 @@
         }
 
         .reply-avatar {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #5eead4 0%, #22d3ee 100%);
-            color: white;
+            background-color: #e5e7eb; /* Slightly different gray for replies */
+            color: #4b5563;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            margin-right: 12px;
-            font-size: 16px;
+            margin-right: 10px;
+            font-size: 14px;
         }
 
         .reply-meta {
@@ -175,35 +217,31 @@
 
         .reply-author {
             font-weight: 600;
-            color: #111827;
+            color: #1a1a1a;
             font-size: 14px;
         }
 
         .reply-time {
-            font-size: 13px;
-            color: #9ca3af;
+            font-size: 12px;
+            color: #999;
         }
 
         .reply-content {
             color: #4b5563;
-            font-size: 15px;
-            margin-left: 52px;
-            line-height: 1.6;
+            font-size: 14px;
+            margin-left: 46px;
         }
 
         .back-link {
-            display: inline-flex;
-            align-items: center;
+            display: inline-block;
             color: #22d3ee;
             text-decoration: none;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
         }
 
         .back-link:hover {
-            color: #06b6d4;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -218,269 +256,70 @@
 
         <div class="post-card">
             <div class="post-header">
-                <div class="avatar">A</div>
+                <div class="avatar"><c:out value="${post.avatar}"/></div>
                 <div class="post-meta">
-                    <div class="post-title">Managing exam stress - what works for you?</div>
+                    <div class="post-title"><c:out value="${post.title}"/></div>
                     <div class="post-info">
-                        <span>Anonymous</span>
+                        <span><c:out value="${post.author}"/></span>
                         <span>•</span>
-                        <span class="badge">Moderated</span>
+                        <span class="badge"><c:out value="${post.badge}"/></span>
                         <span>•</span>
-                        <span>Stress</span>
+                        <span><c:out value="${post.category}"/></span>
                         <span>•</span>
-                        <span>2 hours ago</span>
+                        <span><c:out value="${post.time}"/></span>
                     </div>
                 </div>
             </div>
             <div class="post-content">
-                Finals are coming up and I'm feeling overwhelmed. What strategies have helped you cope with academic pressure?
+                <c:out value="${post.content}"/>
             </div>
             <div class="post-stats">
                 <div class="stat">
                     <span>👍</span>
-                    <span>24</span>
+                    <span><c:out value="${post.likes}"/></span>
                 </div>
                 <div class="stat">
                     <span>💬</span>
-                    <span>18 replies</span>
+                    <span><c:out value="${post.replyCount}"/> replies</span>
                 </div>
             </div>
         </div>
 
+        <div class="reply-form-card">
+            <div class="reply-form-title">Join the discussion</div>
+            <form action="${pageContext.request.contextPath}/forum/addReply" method="POST">
+                
+                <input type="hidden" name="postId" value="${post.id}" />
+                
+                <textarea 
+                    name="content" 
+                    class="reply-textarea" 
+                    placeholder="Type your reply here... Be kind and supportive."
+                    required></textarea>
+                    
+                <button type="submit" class="submit-btn">Post Reply</button>
+            </form>
+        </div>
+
         <div class="replies-section">
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">R</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Relax_Bro</div>
-                        <div class="reply-time">Ali • 1 hours ago</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Take deep breaths and remember that exams don't define you. You've got this!
-                </div>
-            </div>
+            <c:if test="${empty replies}">
+                <p style="text-align: center; color: #999; padding: 20px;">No replies yet. Be the first to reply!</p>
+            </c:if>
 
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">S</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Sam</div>
-                        <div class="reply-time">45 minutes ago</div>
+            <c:forEach var="r" items="${replies}">
+                <div class="reply">
+                    <div class="reply-header">
+                        <div class="reply-avatar"><c:out value="${r.avatar}"/></div>
+                        <div class="reply-meta">
+                            <div class="reply-author"><c:out value="${r.author}"/></div>
+                            <div class="reply-time"><c:out value="${r.time}"/></div>
+                        </div>
+                    </div>
+                    <div class="reply-content">
+                        <c:out value="${r.content}"/>
                     </div>
                 </div>
-                <div class="reply-content">
-                    I totally get the stress—breaking study time into short sessions, getting enough sleep, and taking quick breaks to relax really helps me stay focused and calm during finals.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">D</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Daniel</div>
-                        <div class="reply-time">12 minutes ago</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    I find that taking regular breaks, staying positive, and getting enough rest helps me manage exam stress better.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">M</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Maya</div>
-                        <div class="reply-time">8 minutes ago</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Exercise has been a game-changer for me. Even a 15-minute walk helps clear my mind and reduce anxiety.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">J</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Jordan</div>
-                        <div class="reply-time">5 minutes ago</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Making a realistic study schedule has helped me feel more in control. I break down what I need to study by day and it feels less overwhelming.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">L</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Lisa</div>
-                        <div class="reply-time">3 minutes ago</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Meditation apps like Headspace or Calm have really helped me. Just 10 minutes a day makes a difference.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">C</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Chris</div>
-                        <div class="reply-time">2 minutes ago</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Study groups help me stay accountable and motivated. Plus, explaining concepts to others really reinforces my own understanding.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">E</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Emma</div>
-                        <div class="reply-time">1 minute ago</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    I keep healthy snacks nearby while studying. Proper nutrition really affects my concentration and mood.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">T</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Tyler</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Limiting caffeine has surprisingly helped me. I was drinking too much coffee which made my anxiety worse.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">N</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Nina</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Talk to your professors if you're struggling! Most are really understanding and can offer guidance or extensions if needed.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">A</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Alex</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    I use the Pomodoro technique - 25 minutes of focused study, then a 5-minute break. It keeps me from burning out.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">K</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Kate</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Remember to reach out to campus counseling services if you need extra support. They're there to help!
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">B</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Ben</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Visualization techniques work for me. I imagine myself calmly taking the exam and doing well.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">O</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Olivia</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Getting enough sleep is crucial! All-nighters might seem productive but they actually hurt your performance.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">R</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Ryan</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Practice past exams if available. It helps reduce anxiety because you know what to expect.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">Z</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Zoe</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Journal your thoughts and feelings. Getting worries out of your head and onto paper can be really therapeutic.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">I</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Isaac</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Stay hydrated! Dehydration can affect concentration and increase stress levels.
-                </div>
-            </div>
-
-            <div class="reply">
-                <div class="reply-header">
-                    <div class="reply-avatar">P</div>
-                    <div class="reply-meta">
-                        <div class="reply-author">Priya</div>
-                        <div class="reply-time">Just now</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    Be kind to yourself. One exam doesn't determine your future. You're doing your best and that's what matters.
-                </div>
-            </div>
+            </c:forEach>
         </div>
     </div>
 </body>
