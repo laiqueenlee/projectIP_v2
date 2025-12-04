@@ -350,6 +350,23 @@
             font-size: 16px;
         }
 
+        /* make reply link match button styling (no underline, inherit color) */
+        .post-interactions a.interaction-btn {
+            text-decoration: none;
+            color: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .post-interactions a.interaction-btn:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
         /* Community Guidelines */
         .guidelines {
             background: var(--bg-card);
