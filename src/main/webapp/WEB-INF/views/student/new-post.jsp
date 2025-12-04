@@ -421,7 +421,10 @@
                 <p>Share your thoughts or questions with the community</p>
             </div>
 
-            <form action="${pageContext.request.contextPath}/forum/submit-post" method="POST" id="createPostForm" onsubmit="handleSubmit(event)">
+            <form action="${pageContext.request.contextPath}/forum/submit-post" 
+      method="POST" 
+      id="createPostForm" 
+      onsubmit="handleSubmit(event)">
                 <!-- Post Title -->
                 <div class="form-group">
                     <label for="postTitle">Post title</label>
@@ -489,7 +492,10 @@
         </div>
     </div>
 
-    <script>
+<script>
+        // 1. Create a flag to track if we are intentionally submitting
+        let isSubmitting = false;
+
         // Character counter
         function updateCharCount(inputId, maxLength, counterId) {
             const input = document.getElementById(inputId);
@@ -498,7 +504,6 @@
             
             counter.textContent = `${currentLength} / ${maxLength}`;
             
-            // Add warning/error classes
             counter.classList.remove('warning', 'error');
             if (currentLength > maxLength * 0.9) {
                 counter.classList.add('warning');
@@ -508,83 +513,82 @@
             }
         }
 
-        // Voice input toggle
+        // Voice input toggle (Visual only for now)
         let isRecording = false;
         function toggleVoiceInput() {
             const btn = document.querySelector('.voice-input-btn');
             const icon = document.getElementById('voiceIcon');
-            
             isRecording = !isRecording;
-            
             if (isRecording) {
                 btn.classList.add('recording');
                 icon.textContent = '⏹️';
-                // In a real implementation, start speech recognition here
-                console.log('Started voice recording');
             } else {
                 btn.classList.remove('recording');
                 icon.textContent = '🎤';
-                console.log('Stopped voice recording');
             }
         }
 
-        // Form submission
+        // 2. UPDATED: Handle Form Submission
         function handleSubmit(event) {
-            event.preventDefault();
-            
             const form = event.target;
-            const submitBtn = document.getElementById('submitBtn');
             
             // Validate form
             if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
+                // If invalid, let the browser show errors, but DO NOT set isSubmitting
+                return; 
             }
             
-            // Add loading state
-            submitBtn.classList.add('loading');
-            submitBtn.disabled = true;
+            // If valid, set the flag to TRUE so the popup doesn't appear
+            isSubmitting = true;
             
-            // Simulate submission (in real app, this would be an actual form submit or AJAX)
-            setTimeout(() => {
-                console.log('Form submitted:', {
-                    title: form.postTitle.value,
-                    content: form.postContent.value,
-                    category: form.category.value,
-                    anonymous: form.postAnonymously.checked
-                });
-                
-                // Redirect to forum
-                window.location.href = '${pageContext.request.contextPath}/student/forum';
-            }, 1500);
+            // Add loading state
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.classList.add('loading');
+            submitBtn.innerText = 'Posting...'; // Optional: Change text
+            
+            // Clear the draft from local storage
+            localStorage.removeItem('forumPostDraft');
+
+            // The form will now submit naturally to the server
         }
 
         // Cancel handler
         function handleCancel() {
             if (confirm('Are you sure you want to cancel? Your post will not be saved.')) {
+                // We set isSubmitting to true here too, so we don't get double alerts
+                isSubmitting = true; 
                 window.location.href = '${pageContext.request.contextPath}/student/forum';
             }
         }
 
-        // Initialize character counters
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             updateCharCount('postTitle', 200, 'titleCounter');
             updateCharCount('postContent', 2000, 'contentCounter');
+            restoreDraft();
         });
 
-        // Warn before leaving if form has content
+        // 3. UPDATED: Warn before leaving (Check isSubmitting flag)
         window.addEventListener('beforeunload', function(e) {
+            // If we are submitting the form, STOP here. Do not show the popup.
+            if (isSubmitting) {
+                return undefined;
+            }
+
             const title = document.getElementById('postTitle').value;
             const content = document.getElementById('postContent').value;
             
+            // Only show popup if there is text AND we are not submitting
             if (title || content) {
                 e.preventDefault();
-                e.returnValue = '';
+                e.returnValue = ''; // Required for Chrome
             }
         });
 
-        // Auto-save to localStorage (optional)
+        // Auto-save logic
         function autoSave() {
+            if (isSubmitting) return; // Don't save if we are leaving
+            
             const title = document.getElementById('postTitle').value;
             const content = document.getElementById('postContent').value;
             const category = document.getElementById('category').value;
@@ -595,39 +599,27 @@
             }
         }
 
-        // Restore draft on page load
         function restoreDraft() {
             const draftStr = localStorage.getItem('forumPostDraft');
             if (draftStr) {
                 try {
                     const draft = JSON.parse(draftStr);
-                    // Only restore if draft is less than 24 hours old
                     if (Date.now() - draft.timestamp < 24 * 60 * 60 * 1000) {
-                        if (confirm('Would you like to restore your previous draft?')) {
-                            document.getElementById('postTitle').value = draft.title || '';
-                            document.getElementById('postContent').value = draft.content || '';
-                            document.getElementById('category').value = draft.category || '';
-                            
-                            updateCharCount('postTitle', 200, 'titleCounter');
-                            updateCharCount('postContent', 2000, 'contentCounter');
+                        // Optional: ask user? For now just load it or ignore
+                        // Simple logic: if fields are empty, fill them
+                        if (!document.getElementById('postTitle').value) {
+                             document.getElementById('postTitle').value = draft.title || '';
+                             document.getElementById('postContent').value = draft.content || '';
+                             document.getElementById('category').value = draft.category || '';
+                             updateCharCount('postTitle', 200, 'titleCounter');
+                             updateCharCount('postContent', 2000, 'contentCounter');
                         }
                     }
-                } catch (e) {
-                    console.error('Error restoring draft:', e);
-                }
+                } catch (e) {}
             }
         }
 
-        // Set up auto-save every 30 seconds
         setInterval(autoSave, 30000);
-
-        // Restore draft on page load
-        document.addEventListener('DOMContentLoaded', restoreDraft);
-
-        // Clear draft on successful submission
-        document.getElementById('createPostForm').addEventListener('submit', function() {
-            localStorage.removeItem('forumPostDraft');
-        });
     </script>
 </body>
 </html>
