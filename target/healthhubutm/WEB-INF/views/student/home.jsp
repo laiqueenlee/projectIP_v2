@@ -226,6 +226,29 @@
             color:#123;
         }
 
+        /* Chat link ( replaces emoji ) */
+        .chat-link{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            text-decoration:none;
+            color:inherit;
+            border-radius:8px;
+            padding:2px 6px;
+            transition:transform 0.12s ease, box-shadow 0.12s ease;
+        }
+        .chat-link:focus, .chat-link:hover{
+            transform:translateY(-2px);
+            box-shadow:0 6px 14px rgba(63,185,168,0.12);
+            outline:none;
+        }
+        .chat-icon{
+            width:28px;
+            height:28px;
+            display:inline-block;
+            flex:0 0 28px;
+        }
+
         /* Animations */
         @keyframes fadeInUp{
             from{opacity:0;transform:translateY(20px)}
@@ -440,7 +463,18 @@
                     </div>
 
                     <div class="card" style="margin-top:14px">
-                        <h4>💬 Ask AI</h4>
+                        <h4>
+                            <a href="${pageContext.request.contextPath}/student/chatbot" class="chat-link" title="Open AI Chatbot" aria-label="Open AI Chatbot">
+                                <!-- inline chatbot SVG icon -->
+                                <svg class="chat-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                                    <rect x="2" y="3" width="20" height="14" rx="3" fill="#E8F9F7"/>
+                                    <rect x="6" y="7" width="3" height="3" rx="0.8" fill="#3FB9A8"/>
+                                    <rect x="11" y="7" width="7" height="3" rx="0.8" fill="#3FB9A8"/>
+                                    <path d="M4 17c0 1.104.895 2 2 2h12l2 3V5" stroke="#3FB9A8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                </svg>
+                                Ask AI
+                            </a>
+                        </h4>
                         <form action="${pageContext.request.contextPath}/ai/query" method="post" onsubmit="return handleAIQuery(event)">
                             <input name="q" placeholder="Ask something..." aria-label="Ask AI a question"/>
                             <div style="margin-top:8px;text-align:right">
