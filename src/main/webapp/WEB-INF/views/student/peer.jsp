@@ -553,10 +553,10 @@
                                 <span class="interaction-icon">👍</span>
                                 <span class="count">24</span>
                             </button>
-                            <button class="interaction-btn">
+                            <a class="interaction-btn" href="${pageContext.request.contextPath}/student/post?id=1" onclick="event.stopPropagation()" role="button" aria-label="View replies">
                                 <span class="interaction-icon">💬</span>
                                 <span>18 replies</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
