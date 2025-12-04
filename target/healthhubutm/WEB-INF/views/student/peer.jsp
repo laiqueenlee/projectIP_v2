@@ -1,5 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -160,7 +161,8 @@
             gap: 8px;
             margin-bottom: 24px;
             overflow-x: auto;
-            padding-bottom: 4px;
+            padding: 8px 4px 4px; /* give a little top padding so button borders are not visually clipped */
+            -webkit-overflow-scrolling: touch;
             animation: fadeIn 0.5s ease-out 0.3s backwards;
         }
 
@@ -184,6 +186,9 @@
             transition: var(--transition);
             white-space: nowrap;
             font-weight: 500;
+            background-clip: padding-box; /* ensure full rounded border is rendered */
+            -webkit-background-clip: padding-box;
+            position: relative;
         }
 
         .category-btn:hover {
@@ -196,6 +201,7 @@
             background: var(--primary);
             color: white;
             border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 191, 165, 0.06); /* subtle ring so top edge looks complete */
         }
 
         /* Posts Section */
@@ -345,6 +351,23 @@
             font-size: 16px;
         }
 
+        /* make reply link match button styling (no underline, inherit color) */
+        .post-interactions a.interaction-btn {
+            text-decoration: none;
+            color: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .post-interactions a.interaction-btn:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
         /* Community Guidelines */
         .guidelines {
             background: var(--bg-card);
@@ -486,6 +509,7 @@
     </style>
 </head>
 <body>
+    <%@ include file="/WEB-INF/views/includes/navbar.jsp" %>
     <div class="forum-container">
         <header>
             <h1>Peer Support Forum</h1>
@@ -495,10 +519,10 @@
         <!-- Top Bar with Tabs and New Post Button -->
         <div class="top-bar">
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('recent')">
+                <button class="tab-btn active" onclick="switchTab('recent', event)">
                     <span>🕐</span> Recent
                 </button>
-                <button class="tab-btn" onclick="switchTab('popular')">
+                <button class="tab-btn" onclick="switchTab('popular', event)">
                     <span>⭐</span> Popular
                 </button>
             </div>
@@ -528,121 +552,44 @@
 
         <!-- Posts Section -->
         <div class="posts-section" id="postsSection">
-            <!-- Post 1 -->
-            <div class="post" data-category="Stress" onclick="viewPost(1)">
-                <div class="post-header">
-                    <div class="post-avatar">A</div>
-                    <div class="post-content">
-                        <div class="post-title-row">
-                            <h3>Managing exam stress - what works for you?</h3>
-                            <span class="post-badge moderated">Moderated</span>
-                        </div>
-                        <div class="post-info">
-                            <span>Anonymous</span>
-                            <span>Stress</span>
-                            <span>2 hours ago</span>
-                        </div>
-                        <p class="post-text">Finals are coming up and I'm feeling overwhelmed. What strategies have helped you cope with academic pressure?</p>
-                        <div class="post-interactions">
-                            <button class="interaction-btn" onclick="toggleLike(event, this)">
-                                <span class="interaction-icon">👍</span>
-                                <span class="count">24</span>
-                            </button>
-                            <button class="interaction-btn">
-                                <span class="interaction-icon">💬</span>
-                                <span>18 replies</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <c:forEach var="p" items="${posts}">
+<div class="post" data-category="${p.category}" onclick="viewPost(<c:out value='${p.id}'/>)">                    <div class="post-header">
+                        <div class="post-avatar"><c:out value="${p.avatar}"/></div>
+                        <div class="post-content">
+                            <div class="post-title-row">
+                                <h3><c:out value="${p.title}"/></h3>
+                                <c:if test="${not empty p.badge}">
+                                    <div class="post-badge moderated"><c:out value="${p.badge}"/></div>
+                                </c:if>
+                            </div>
 
-            <!-- Post 2 -->
-            <div class="post" data-category="Wellness" onclick="viewPost(2)">
-                <div class="post-header">
-                    <div class="post-avatar">S</div>
-                    <div class="post-content">
-                        <div class="post-title-row">
-                            <h3>Meditation apps recommendations</h3>
-                            <span class="post-badge moderated">Moderated</span>
-                        </div>
-                        <div class="post-info">
-                            <span>Student123</span>
-                            <span>Wellness</span>
-                            <span>5 hours ago</span>
-                        </div>
-                        <p class="post-text">I'm looking to start a meditation practice. Does anyone have good app recommendations for beginners?</p>
-                        <div class="post-interactions">
-                            <button class="interaction-btn" onclick="toggleLike(event, this)">
-                                <span class="interaction-icon">👍</span>
-                                <span class="count">15</span>
-                            </button>
-                            <button class="interaction-btn">
-                                <span class="interaction-icon">💬</span>
-                                <span>12 replies</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <div class="post-info">
+                                <span><c:out value="${p.author}"/></span>
+                                <span><c:out value="${p.category}"/></span>
+                                <span><c:out value="${p.time}"/></span>
+                            </div>
 
-            <!-- Post 3 -->
-            <div class="post" data-category="Anxiety" onclick="viewPost(3)">
-                <div class="post-header">
-                    <div class="post-avatar">A</div>
-                    <div class="post-content">
-                        <div class="post-title-row">
-                            <h3>How to deal with imposter syndrome</h3>
-                            <span class="post-badge">Moderated</span>
-                        </div>
-                        <div class="post-info">
-                            <span>Anonymous</span>
-                            <span>Anxiety</span>
-                            <span>1 day ago</span>
-                        </div>
-                        <p class="post-text">Sometimes I feel like I don't belong here and everyone is better than me. Can anyone relate?</p>
-                        <div class="post-interactions">
-                            <button class="interaction-btn liked" onclick="toggleLike(event, this)">
-                                <span class="interaction-icon">👍</span>
-                                <span class="count">43</span>
-                            </button>
-                            <button class="interaction-btn">
-                                <span class="interaction-icon">💬</span>
-                                <span>31 replies</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <p class="post-text"><c:out value="${p.excerpt}"/></p>
 
-            <!-- Post 4 -->
-            <div class="post" data-category="Self-Care" onclick="viewPost(4)">
-                <div class="post-header">
-                    <div class="post-avatar">S</div>
-                    <div class="post-content">
-                        <div class="post-title-row">
-                            <h3>Sleep schedule tips needed</h3>
-                            <span class="post-badge moderated">Moderated</span>
-                        </div>
-                        <div class="post-info">
-                            <span>Sleepless</span>
-                            <span>Self-Care</span>
-                            <span>1 day ago</span>
-                        </div>
-                        <p class="post-text">My sleep has been all over the place. Looking for practical advice to get back on track.</p>
-                        <div class="post-interactions">
-                            <button class="interaction-btn" onclick="toggleLike(event, this)">
-                                <span class="interaction-icon">👍</span>
-                                <span class="count">19</span>
-                            </button>
-                            <button class="interaction-btn">
-                                <span class="interaction-icon">💬</span>
-                                <span>16 replies</span>
-                            </button>
+                            <div class="post-interactions">
+                                <button class="interaction-btn" onclick="toggleLike(event, this)">
+                                    <span class="interaction-icon">👍</span>
+                                    <span class="count"><c:out value="${p.likes}"/></span>
+                                </button>
+
+                                <a class="interaction-btn"
+                                   href="${pageContext.request.contextPath}/forum/post/<c:out value='${p.id}'/>"
+                                   onclick="event.stopPropagation()"
+                                   role="button"
+                                   aria-label="View replies">
+                                    <span class="interaction-icon">💬</span>
+                                    <span><c:out value="${p.replyCount}"/> replies</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </c:forEach>
         </div>
 
         <!-- Community Guidelines -->
@@ -659,109 +606,146 @@
     </div>
 
     <script>
-        // Filter posts by category
-        function filterByCategory(btn, category) {
-            // Update active button
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+    // --- NEW HELPER: Convert time strings to minutes for sorting ---
+    function parseTime(timeStr) {
+        timeStr = timeStr.toLowerCase().trim();
+        
+        // "Just now" is the newest possible time (0 minutes ago)
+        if (timeStr.includes('just now')) return 0;
+        
+        // Extract the number (e.g., "2" from "2 hours ago")
+        const matches = timeStr.match(/(\d+)/);
+        const val = matches ? parseInt(matches[0]) : 999999;
+        
+        // Convert everything to minutes
+        if (timeStr.includes('minute')) return val;
+        if (timeStr.includes('hour')) return val * 60;
+        if (timeStr.includes('day')) return val * 1440; // 24 * 60
+        if (timeStr.includes('week')) return val * 10080;
+        
+        return val; // Fallback
+    }
 
-            // Filter posts
-            const posts = document.querySelectorAll('.post');
-            posts.forEach(post => {
-                if (category === 'All' || post.dataset.category === category) {
-                    post.style.display = 'block';
-                } else {
-                    post.style.display = 'none';
-                }
-            });
-
-            // Check if no posts found
-            checkEmptyState();
+    // Switch between Recent and Popular tabs
+    function switchTab(tab, evt) {
+        // 1. Update active tab button style
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        if (evt && evt.target) {
+            const btn = evt.target.closest('.tab-btn');
+            if (btn) btn.classList.add('active');
         }
 
-        // Search posts
-        function searchPosts() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const posts = document.querySelectorAll('.post');
+        // 2. Get all posts
+        const postsSection = document.getElementById('postsSection');
+        const posts = Array.from(postsSection.querySelectorAll('.post'));
 
-            posts.forEach(post => {
-                const title = post.querySelector('h3').textContent.toLowerCase();
-                const text = post.querySelector('.post-text').textContent.toLowerCase();
+        // 3. Sort Logic
+        if (tab === 'popular') {
+            // Sort by Likes (Highest number first)
+            posts.sort((a, b) => {
+                const aLikes = parseInt(a.querySelector('.interaction-btn .count').textContent) || 0;
+                const bLikes = parseInt(b.querySelector('.interaction-btn .count').textContent) || 0;
+                return bLikes - aLikes;
+            });
+        } else {
+            // Sort by Time (Smallest "time ago" first)
+            posts.sort((a, b) => {
+                // We target the LAST span in .post-info because that's where the time is
+                const aText = a.querySelector('.post-info span:last-child').textContent;
+                const bText = b.querySelector('.post-info span:last-child').textContent;
                 
-                if (title.includes(filter) || text.includes(filter)) {
-                    post.style.display = 'block';
-                } else {
-                    post.style.display = 'none';
-                }
+                return parseTime(aText) - parseTime(bText);
             });
-
-            checkEmptyState();
         }
 
-        // Switch between Recent and Popular tabs
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.tab-btn').classList.add('active');
+        // 4. Re-append sorted elements to the DOM
+        posts.forEach(p => postsSection.appendChild(p));
+    }
 
-            // In a real app, this would fetch different data
-            console.log('Switched to:', tab);
-        }
+    // --- EXISTING FUNCTIONS (Unchanged) ---
 
-        // Toggle like on post
-        function toggleLike(event, btn) {
-            event.stopPropagation();
-            btn.classList.toggle('liked');
-            
-            const countSpan = btn.querySelector('.count');
-            let count = parseInt(countSpan.textContent);
-            
-            if (btn.classList.contains('liked')) {
-                count++;
+    function filterByCategory(btn, category) {
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const posts = document.querySelectorAll('.post');
+        posts.forEach(post => {
+            if (category === 'All' || post.dataset.category === category) {
+                post.style.display = 'block';
             } else {
-                count--;
+                post.style.display = 'none';
             }
-            
-            countSpan.textContent = count;
-        }
-
-        // View post details
-        function viewPost(postId) {
-            window.location.href = '${pageContext.request.contextPath}/forum/post/' + postId;
-        }
-
-        // Check if there are no visible posts
-        function checkEmptyState() {
-            const postsSection = document.getElementById('postsSection');
-            const visiblePosts = Array.from(document.querySelectorAll('.post')).filter(p => p.style.display !== 'none');
-            
-            // Remove existing empty state
-            const existingEmpty = postsSection.querySelector('.empty-state');
-            if (existingEmpty) {
-                existingEmpty.remove();
-            }
-
-            if (visiblePosts.length === 0) {
-                const emptyState = document.createElement('div');
-                emptyState.className = 'empty-state';
-                emptyState.innerHTML = `
-                    <div class="empty-state-icon">💬</div>
-                    <p>No posts found</p>
-                `;
-                postsSection.appendChild(emptyState);
-            }
-        }
-
-        // Keyboard accessibility
-        document.querySelectorAll('.post').forEach(post => {
-            post.setAttribute('tabindex', '0');
-            post.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    post.click();
-                }
-            });
         });
-    </script>
+        checkEmptyState();
+    }
+
+    function searchPosts() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const posts = document.querySelectorAll('.post');
+
+        posts.forEach(post => {
+            const title = post.querySelector('h3').textContent.toLowerCase();
+            const text = post.querySelector('.post-text').textContent.toLowerCase();
+            
+            if (title.includes(filter) || text.includes(filter)) {
+                post.style.display = 'block';
+            } else {
+                post.style.display = 'none';
+            }
+        });
+        checkEmptyState();
+    }
+
+    function toggleLike(event, btn) {
+        event.stopPropagation();
+        btn.classList.toggle('liked');
+        
+        const countSpan = btn.querySelector('.count');
+        let count = parseInt(countSpan.textContent);
+        
+        if (btn.classList.contains('liked')) {
+            count++;
+        } else {
+            count--;
+        }
+        countSpan.textContent = count;
+    }
+
+    function viewPost(postId) {
+        window.location.href = '${pageContext.request.contextPath}/forum/post/' + postId;
+    }
+
+    function checkEmptyState() {
+        const postsSection = document.getElementById('postsSection');
+        const visiblePosts = Array.from(document.querySelectorAll('.post')).filter(p => p.style.display !== 'none');
+        
+        const existingEmpty = postsSection.querySelector('.empty-state');
+        if (existingEmpty) {
+            existingEmpty.remove();
+        }
+
+        if (visiblePosts.length === 0) {
+            const emptyState = document.createElement('div');
+            emptyState.className = 'empty-state';
+            emptyState.innerHTML = `
+                <div class="empty-state-icon">💬</div>
+                <p>No posts found</p>
+            `;
+            postsSection.appendChild(emptyState);
+        }
+    }
+
+    // Keyboard accessibility
+    document.querySelectorAll('.post').forEach(post => {
+        post.setAttribute('tabindex', '0');
+        post.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                post.click();
+            }
+        });
+    }); 
+</script>
 </body>
 </html>
