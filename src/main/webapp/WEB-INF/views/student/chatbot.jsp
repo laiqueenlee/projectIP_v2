@@ -222,7 +222,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Hello, Alex</h1>
+        <h1>Hello, <c:out value="${sessionScope.username}" default="Alex"/></h1>
     </div>
 
     <div class="chat-container">
