@@ -160,7 +160,8 @@
             gap: 8px;
             margin-bottom: 24px;
             overflow-x: auto;
-            padding-bottom: 4px;
+            padding: 8px 4px 4px; /* give a little top padding so button borders are not visually clipped */
+            -webkit-overflow-scrolling: touch;
             animation: fadeIn 0.5s ease-out 0.3s backwards;
         }
 
@@ -184,6 +185,9 @@
             transition: var(--transition);
             white-space: nowrap;
             font-weight: 500;
+            background-clip: padding-box; /* ensure full rounded border is rendered */
+            -webkit-background-clip: padding-box;
+            position: relative;
         }
 
         .category-btn:hover {
@@ -196,6 +200,7 @@
             background: var(--primary);
             color: white;
             border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 191, 165, 0.06); /* subtle ring so top edge looks complete */
         }
 
         /* Posts Section */
@@ -495,10 +500,10 @@
         <!-- Top Bar with Tabs and New Post Button -->
         <div class="top-bar">
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('recent')">
+                <button class="tab-btn active" onclick="switchTab('recent', event)">
                     <span>🕐</span> Recent
                 </button>
-                <button class="tab-btn" onclick="switchTab('popular')">
+                <button class="tab-btn" onclick="switchTab('popular', event)">
                     <span>⭐</span> Popular
                 </button>
             </div>
@@ -700,12 +705,35 @@
         }
 
         // Switch between Recent and Popular tabs
-        function switchTab(tab) {
+        function switchTab(tab, evt) {
+            // update active tab button
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.tab-btn').classList.add('active');
+            if (evt && evt.target) {
+                const btn = evt.target.closest('.tab-btn');
+                if (btn) btn.classList.add('active');
+            }
 
-            // In a real app, this would fetch different data
-            console.log('Switched to:', tab);
+            // Recent: keep DOM order. Popular: sort posts by like count (descending).
+            const postsSection = document.getElementById('postsSection');
+            const posts = Array.from(postsSection.querySelectorAll('.post'));
+
+            if (tab === 'popular') {
+                posts.sort((a, b) => {
+                    const aCountEl = a.querySelector('.interaction-btn .count');
+                    const bCountEl = b.querySelector('.interaction-btn .count');
+                    const aVal = aCountEl ? parseInt(aCountEl.textContent, 10) || 0 : 0;
+                    const bVal = bCountEl ? parseInt(bCountEl.textContent, 10) || 0 : 0;
+                    return bVal - aVal;
+                });
+            } else {
+                // keep original document order (assumes current DOM order is "recent")
+                posts.sort((a, b) => {
+                    return 0; // no-op: maintain current order
+                });
+            }
+
+            // re-attach posts in new order
+            posts.forEach(p => postsSection.appendChild(p));
         }
 
         // Toggle like on post
