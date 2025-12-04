@@ -14,6 +14,43 @@
             box-sizing: border-box;
         }
 
+        /* match .btn / .btn-ghost styling used on home.jsp */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+            border: 1px solid transparent;
+            background: transparent;
+            color: inherit;
+        }
+
+        .btn-ghost {
+            background: #fff;
+            color: #065f46;
+            border: 1px solid #cceee6;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+            padding: 8px 14px;
+        }
+
+        .btn-ghost:hover,
+        .btn-ghost:focus {
+            background: #f0fdfa;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(6,95,70,0.08);
+            outline: none;
+            text-decoration: none;
+        }
+
+        .btn-ghost:focus {
+            box-shadow: 0 0 0 3px rgba(99,179,155,0.15);
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             background-color: #f9fafb;
@@ -221,8 +258,21 @@
     </style>
 </head>
 <body>
+    <c:choose>
+        <c:when test="${not empty loggedInUser.fullName}">
+            <c:set var="displayName" value="${loggedInUser.fullName}"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="displayName" value="${loggedInUser.username}"/>
+        </c:otherwise>
+    </c:choose>
+
     <div class="header">
-        <h1>Hello, <c:out value="${sessionScope.username}" default="Alex"/></h1>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <h1 style="margin:0 0 0 12px">Hello, <c:out value="${displayName}" default="Alex"/></h1>
+            <a href="#" class="btn btn-ghost" aria-label="Go back" onclick="if(history.length>1){ history.back(); } else { window.location.href='${pageContext.request.contextPath}/'; } return false;">← Back</a>
+            
+        </div>
     </div>
 
     <div class="chat-container">
