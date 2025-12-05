@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -184,7 +185,8 @@ public class ForumController {
     public String addReply(
             @RequestParam("postId") String postId,
             @RequestParam("content") String content,
-            Model model
+            Model model,
+            HttpSession session
     ) {
         // Find post
         Map<String, String> foundPost = posts.stream()
@@ -196,9 +198,21 @@ public class ForumController {
             return "redirect:/student/forum";
         }
 
-        // Create new reply
+        // Determine author from session (loggedInUser), fallback to "Current User"
+        String author = "Current User";
+        Object logged = session.getAttribute("loggedInUser");
+        if (logged instanceof com.secj3303.model.User) {
+            com.secj3303.model.User u = (com.secj3303.model.User) logged;
+            if (u.getFullName() != null && !u.getFullName().isEmpty()) {
+                author = u.getFullName();
+            } else if (u.getUsername() != null && !u.getUsername().isEmpty()) {
+                author = u.getUsername();
+            }
+        }
+
+        // Create new reply with resolved author
         Map<String, String> newReply = new HashMap<>();
-        newReply.put("author", "Current User"); // adjust as needed
+        newReply.put("author", author);
         newReply.put("time", "Just now");
         newReply.put("content", content);
         newReply.put("avatar", "U");
