@@ -55,14 +55,17 @@ public class ForumController {
             @RequestParam("postTitle") String title,
             @RequestParam("postContent") String content,
             @RequestParam("category") String category,
-            @RequestParam(value = "postAnonymously", required = false) String anonymous
+            @RequestParam(value = "postAnonymously", required = false) String anonymous,
+            Model model
     ) {
+        // Generate new ID
         int maxId = posts.stream()
                 .mapToInt(p -> Integer.parseInt(p.get("id")))
                 .max()
                 .orElse(0);
         String newId = String.valueOf(maxId + 1);
 
+        // Determine author
         String author = (anonymous != null) ? "Anonymous" : "Current User";
         String avatar = (anonymous != null) ? "A" : "U";
 
@@ -79,8 +82,18 @@ public class ForumController {
                 "Just now"
         );
 
+        // Add new post at top
         posts.add(0, newPost);
-        return "redirect:/student/forum";
+
+        // Optionally provide replies (empty by default)
+        model.addAttribute("replies", Collections.emptyList());
+
+    // 1. Add attributes for the JSP to use
+        model.addAttribute("newPost", newPost); 
+        model.addAttribute("posts", posts);     
+
+        // 2. CRITICAL CHANGE: Return "student/new-post" instead of "student/forum"
+        return "student/new-post";
     }
 
     // --- VIEW SINGLE POST (both param and path variants) ---
@@ -217,19 +230,29 @@ public class ForumController {
         newReply.put("content", content);
         newReply.put("avatar", "U");
 
-        // Build replies list: put the new reply at the top
-        List<Map<String, String>> replies = sampleReplies();
-        replies.add(0, newReply);
-
-        // Update the post's replyCount (optional)
+        // Update the post's replyCount first (safety)
+        int newCount = 1;
         try {
             int rc = Integer.parseInt(foundPost.getOrDefault("replyCount", "0"));
-            foundPost.put("replyCount", String.valueOf(rc + 1));
+            newCount = rc + 1;
         } catch (NumberFormatException ignored) {
+            newCount = 1;
         }
+        foundPost.put("replyCount", String.valueOf(newCount));
+
+        // Build a replies list: prepend the new reply to the sample replies
+        List<Map<String, String>> allReplies = new ArrayList<>(sampleReplies());
+        allReplies.add(0, newReply);
+
+        // Limit the replies list to the post's replyCount (safety check)
+        int targetCount = newCount;
+        if (targetCount > allReplies.size()) {
+            targetCount = allReplies.size();
+        }
+        List<Map<String, String>> limitedReplies = new ArrayList<>(allReplies.subList(0, targetCount));
 
         model.addAttribute("post", foundPost);
-        model.addAttribute("replies", replies);
+        model.addAttribute("replies", limitedReplies);
 
         // Render the newreply view which shows the post with updated replies
         return "student/newreply";

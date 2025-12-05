@@ -419,6 +419,47 @@
             opacity: 0.3;
         }
 
+        /* Reply preview inside post list */
+        .reply-preview {
+            margin: 8px 0 12px;
+            padding: 12px;
+            background: #fbfdfe;
+            border-radius: 8px;
+            border: 1px solid #eef6f3;
+        }
+        .reply-preview-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 6px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .reply-preview-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        .reply-preview-body {
+            flex: 1;
+        }
+        .reply-preview-author {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-right: 6px;
+        }
+        .reply-preview-text {
+            color: var(--text-secondary);
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
