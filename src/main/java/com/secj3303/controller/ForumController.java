@@ -179,4 +179,45 @@ public class ForumController {
         r.put("avatar", avatar);
         return r;
     }
+
+    @PostMapping("/forum/addReply")
+    public String addReply(
+            @RequestParam("postId") String postId,
+            @RequestParam("content") String content,
+            Model model
+    ) {
+        // Find post
+        Map<String, String> foundPost = posts.stream()
+                .filter(p -> p.get("id").equals(postId))
+                .findFirst()
+                .orElse(null);
+
+        if (foundPost == null) {
+            return "redirect:/student/forum";
+        }
+
+        // Create new reply
+        Map<String, String> newReply = new HashMap<>();
+        newReply.put("author", "Current User"); // adjust as needed
+        newReply.put("time", "Just now");
+        newReply.put("content", content);
+        newReply.put("avatar", "U");
+
+        // Build replies list: put the new reply at the top
+        List<Map<String, String>> replies = sampleReplies();
+        replies.add(0, newReply);
+
+        // Update the post's replyCount (optional)
+        try {
+            int rc = Integer.parseInt(foundPost.getOrDefault("replyCount", "0"));
+            foundPost.put("replyCount", String.valueOf(rc + 1));
+        } catch (NumberFormatException ignored) {
+        }
+
+        model.addAttribute("post", foundPost);
+        model.addAttribute("replies", replies);
+
+        // Render the newreply view which shows the post with updated replies
+        return "student/newreply";
+    }
 }
