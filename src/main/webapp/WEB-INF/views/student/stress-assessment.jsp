@@ -217,51 +217,51 @@
             <div class="question-container" data-question="1">
                 <div class="question-title">How stressed are you feeling right now?</div>
                 <div class="options">
-                    <div class="option"><input type="radio" id="q1_1" name="answers" value="5" required><label for="q1_1" class="option-label">Not stressed at all</label></div>
-                    <div class="option"><input type="radio" id="q1_2" name="answers" value="4"><label for="q1_2" class="option-label">Slightly stressed</label></div>
-                    <div class="option"><input type="radio" id="q1_3" name="answers" value="3"><label for="q1_3" class="option-label">Moderately stressed</label></div>
-                    <div class="option"><input type="radio" id="q1_4" name="answers" value="2"><label for="q1_4" class="option-label">Very stressed</label></div>
-                    <div class="option"><input type="radio" id="q1_5" name="answers" value="1"><label for="q1_5" class="option-label">Extremely stressed</label></div>
+                    <div class="option"><input type="radio" id="q1_1" name="q1" value="5" required><label for="q1_1" class="option-label">Not stressed at all</label></div>
+                    <div class="option"><input type="radio" id="q1_2" name="q1" value="4"><label for="q1_2" class="option-label">Slightly stressed</label></div>
+                    <div class="option"><input type="radio" id="q1_3" name="q1" value="3"><label for="q1_3" class="option-label">Moderately stressed</label></div>
+                    <div class="option"><input type="radio" id="q1_4" name="q1" value="2"><label for="q1_4" class="option-label">Very stressed</label></div>
+                    <div class="option"><input type="radio" id="q1_5" name="q1" value="1"><label for="q1_5" class="option-label">Extremely stressed</label></div>
                 </div>
             </div>
             <div class="question-container" data-question="2" style="display:none;">
                 <div class="question-title">How often do you feel overwhelmed?</div>
                 <div class="options">
-                    <div class="option"><input type="radio" id="q2_1" name="answers" value="5"><label for="q2_1" class="option-label">Never</label></div>
-                    <div class="option"><input type="radio" id="q2_2" name="answers" value="4"><label for="q2_2" class="option-label">Rarely</label></div>
-                    <div class="option"><input type="radio" id="q2_3" name="answers" value="3"><label for="q2_3" class="option-label">Sometimes</label></div>
-                    <div class="option"><input type="radio" id="q2_4" name="answers" value="2"><label for="q2_4" class="option-label">Often</label></div>
-                    <div class="option"><input type="radio" id="q2_5" name="answers" value="1"><label for="q2_5" class="option-label">Always</label></div>
+                    <div class="option"><input type="radio" id="q2_1" name="q2" value="5"><label for="q2_1" class="option-label">Never</label></div>
+                    <div class="option"><input type="radio" id="q2_2" name="q2" value="4"><label for="q2_2" class="option-label">Rarely</label></div>
+                    <div class="option"><input type="radio" id="q2_3" name="q2" value="3"><label for="q2_3" class="option-label">Sometimes</label></div>
+                    <div class="option"><input type="radio" id="q2_4" name="q2" value="2"><label for="q2_4" class="option-label">Often</label></div>
+                    <div class="option"><input type="radio" id="q2_5" name="q2" value="1"><label for="q2_5" class="option-label">Always</label></div>
                 </div>
             </div>
             <div class="question-container" data-question="3" style="display:none;">
                 <div class="question-title">How well do you manage stress?</div>
                 <div class="options">
-                    <div class="option"><input type="radio" id="q3_1" name="answers" value="5"><label for="q3_1" class="option-label">Extremely well</label></div>
-                    <div class="option"><input type="radio" id="q3_2" name="answers" value="4"><label for="q3_2" class="option-label">Well</label></div>
-                    <div class="option"><input type="radio" id="q3_3" name="answers" value="3"><label for="q3_3" class="option-label">Moderately</label></div>
-                    <div class="option"><input type="radio" id="q3_4" name="answers" value="2"><label for="q3_4" class="option-label">Not very well</label></div>
-                    <div class="option"><input type="radio" id="q3_5" name="answers" value="1"><label for="q3_5" class="option-label">Not at all</label></div>
+                    <div class="option"><input type="radio" id="q3_1" name="q3" value="5"><label for="q3_1" class="option-label">Extremely well</label></div>
+                    <div class="option"><input type="radio" id="q3_2" name="q3" value="4"><label for="q3_2" class="option-label">Well</label></div>
+                    <div class="option"><input type="radio" id="q3_3" name="q3" value="3"><label for="q3_3" class="option-label">Moderately</label></div>
+                    <div class="option"><input type="radio" id="q3_4" name="q3" value="2"><label for="q3_4" class="option-label">Not very well</label></div>
+                    <div class="option"><input type="radio" id="q3_5" name="q3" value="1"><label for="q3_5" class="option-label">Not at all</label></div>
                 </div>
             </div>
             <div class="question-container" data-question="4" style="display:none;">
                 <div class="question-title">How does stress affect your daily life?</div>
                 <div class="options">
-                    <div class="option"><input type="radio" id="q4_1" name="answers" value="5"><label for="q4_1" class="option-label">No impact</label></div>
-                    <div class="option"><input type="radio" id="q4_2" name="answers" value="4"><label for="q4_2" class="option-label">Minimal impact</label></div>
-                    <div class="option"><input type="radio" id="q4_3" name="answers" value="3"><label for="q4_3" class="option-label">Moderate impact</label></div>
-                    <div class="option"><input type="radio" id="q4_4" name="answers" value="2"><label for="q4_4" class="option-label">Significant impact</label></div>
-                    <div class="option"><input type="radio" id="q4_5" name="answers" value="1"><label for="q4_5" class="option-label">Severe impact</label></div>
+                    <div class="option"><input type="radio" id="q4_1" name="q4" value="5"><label for="q4_1" class="option-label">No impact</label></div>
+                    <div class="option"><input type="radio" id="q4_2" name="q4" value="4"><label for="q4_2" class="option-label">Minimal impact</label></div>
+                    <div class="option"><input type="radio" id="q4_3" name="q4" value="3"><label for="q4_3" class="option-label">Moderate impact</label></div>
+                    <div class="option"><input type="radio" id="q4_4" name="q4" value="2"><label for="q4_4" class="option-label">Significant impact</label></div>
+                    <div class="option"><input type="radio" id="q4_5" name="q4" value="1"><label for="q4_5" class="option-label">Severe impact</label></div>
                 </div>
             </div>
             <div class="question-container" data-question="5" style="display:none;">
                 <div class="question-title">Do you have support for managing stress?</div>
                 <div class="options">
-                    <div class="option"><input type="radio" id="q5_1" name="answers" value="5"><label for="q5_1" class="option-label">Strong support system</label></div>
-                    <div class="option"><input type="radio" id="q5_2" name="answers" value="4"><label for="q5_2" class="option-label">Good support</label></div>
-                    <div class="option"><input type="radio" id="q5_3" name="answers" value="3"><label for="q5_3" class="option-label">Some support</label></div>
-                    <div class="option"><input type="radio" id="q5_4" name="answers" value="2"><label for="q5_4" class="option-label">Limited support</label></div>
-                    <div class="option"><input type="radio" id="q5_5" name="answers" value="1"><label for="q5_5" class="option-label">No support</label></div>
+                    <div class="option"><input type="radio" id="q5_1" name="q5" value="5"><label for="q5_1" class="option-label">Strong support system</label></div>
+                    <div class="option"><input type="radio" id="q5_2" name="q5" value="4"><label for="q5_2" class="option-label">Good support</label></div>
+                    <div class="option"><input type="radio" id="q5_3" name="q5" value="3"><label for="q5_3" class="option-label">Some support</label></div>
+                    <div class="option"><input type="radio" id="q5_4" name="q5" value="2"><label for="q5_4" class="option-label">Limited support</label></div>
+                    <div class="option"><input type="radio" id="q5_5" name="q5" value="1"><label for="q5_5" class="option-label">No support</label></div>
                 </div>
             </div>
             <div class="buttons">
@@ -275,31 +275,120 @@
 <script>
     let currentQuestion = 1;
     const totalQuestions = 5;
+    const answersArray = new Array(totalQuestions).fill(null);
+
     function updateUI() {
+        // Update progress
         const progressPercent = (currentQuestion / totalQuestions) * 100;
         document.querySelector('.progress-fill').style.width = progressPercent + '%';
         document.getElementById('progressText').textContent = currentQuestion + '/' + totalQuestions;
+
+        // Show/hide questions
         document.querySelectorAll('.question-container').forEach((q, index) => {
-            q.style.display = index + 1 === currentQuestion ? 'block' : 'none';
+            if (index + 1 === currentQuestion) {
+                q.style.display = 'block';
+            } else {
+                q.style.display = 'none';
+            }
         });
+
+        // Update button states
         document.getElementById('prevBtn').style.display = currentQuestion > 1 ? 'block' : 'none';
         document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions ? 'Submit' : 'Next →';
+        document.getElementById('nextBtn').style.background = currentQuestion === totalQuestions 
+            ? 'linear-gradient(180deg, #28a745, #1e8449)' 
+            : 'linear-gradient(180deg, var(--teal), var(--teal-dark))';
     }
+
     function nextQuestion() {
-        const selected = document.querySelector('input[name="answers"]:checked');
-        if (!selected) { alert('Please select an answer'); return; }
+        console.log('nextQuestion called, currentQuestion:', currentQuestion);
+        
+        // Get the CURRENT question container and check if ANY radio is selected in it
+        const currentQuestionContainer = document.querySelector('.question-container[data-question="' + currentQuestion + '"]');
+        console.log('currentQuestionContainer:', currentQuestionContainer);
+        
+        if (!currentQuestionContainer) {
+            alert('Error: Could not find current question container');
+            return;
+        }
+        
+        const selected = currentQuestionContainer.querySelector('input[name="q' + currentQuestion + '"]:checked');
+        console.log('selected:', selected);
+        
+        if (!selected) {
+            alert('Please select an answer before proceeding.');
+            return;
+        }
+
+        // Store the answer
+        answersArray[currentQuestion - 1] = selected.value;
+
         if (currentQuestion === totalQuestions) {
-            document.getElementById('assessmentForm').submit();
+            // Before submitting, populate hidden inputs with all answers
+            submitAssessment();
         } else {
             currentQuestion++;
             updateUI();
             window.scrollTo(0, 0);
         }
     }
-    function prevQuestion() {
-        if (currentQuestion > 1) { currentQuestion--; updateUI(); window.scrollTo(0, 0); }
+
+    function submitAssessment() {
+        const form = document.getElementById('assessmentForm');
+        console.log('submitAssessment called');
+        
+        // Clear existing answer inputs
+        form.querySelectorAll('input[name="answer"]').forEach(el => el.remove());
+        form.querySelectorAll('input[name="answers"]').forEach(el => el.remove());
+        
+        // Collect all answers from the form
+        const collectedAnswers = [];
+        for (let i = 1; i <= totalQuestions; i++) {
+            const selected = document.querySelector('input[name="q' + i + '"]:checked');
+            console.log('Question', i, 'selected:', selected);
+            if (selected) {
+                collectedAnswers.push(selected.value);
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'answers';
+                input.value = selected.value;
+                form.appendChild(input);
+                console.log('Added answer:', selected.value);
+            } else {
+                console.log('No answer found for question', i);
+            }
+        }
+        
+        console.log('All collected answers:', collectedAnswers);
+        console.log('Form data before submit:', new FormData(form));
+        
+        form.submit();
     }
+
+    function prevQuestion() {
+        if (currentQuestion > 1) {
+            currentQuestion--;
+            updateUI();
+            window.scrollTo(0, 0);
+        }
+    }
+
+    // Allow keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            nextQuestion();
+        } else if (e.key === 'ArrowRight') {
+            nextQuestion();
+        } else if (e.key === 'ArrowLeft') {
+            prevQuestion();
+        }
+    });
+
+    // Initialize
     updateUI();
+
+    // Debug: Log when page loads
+    console.log('Assessment page loaded. Total questions:', totalQuestions);
 </script>
 </body>
 </html>

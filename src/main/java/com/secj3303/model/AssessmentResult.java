@@ -68,5 +68,17 @@ public class AssessmentResult {
             this.consistency = consistency;
             this.progress = progress;
         }
+
+        public int getEngagement() {
+            return engagement;
+        }
+
+        public int getConsistency() {
+            return consistency;
+        }
+
+        public int getProgress() {
+            return progress;
+        }
     }
 }

@@ -10,15 +10,33 @@ public class AssessmentService {
      */
     public static AssessmentResult calculateResult(String assessmentType, int[] answers) {
         int totalScore = 0;
-        
+        // Defensive: if no answers provided, return a safe default result
+        if (answers == null || answers.length == 0) {
+            int overallScore = 0;
+            String category = categorizeScore(overallScore);
+            String feedback = getFeedback(assessmentType, category, overallScore);
+            String[] recommendations = getRecommendations(assessmentType, category);
+
+            AssessmentResult result = new AssessmentResult(overallScore, category, feedback, recommendations);
+            result.setMetrics(new AssessmentResult.AssessmentMetrics(
+                    generateEngagementScore(),
+                    generateConsistencyScore(),
+                    generateProgressScore()
+            ));
+
+            return result;
+        }
+
         // Calculate total score from answers
         for (int answer : answers) {
             totalScore += answer;
         }
 
-        // Calculate average score (0-25 scale to 0-100 scale)
-        int overallScore = (totalScore * 100) / (answers.length * 25);
-        overallScore = Math.min(100, Math.max(0, overallScore));
+        // Calculate average score per question (each question is 1-5, so max total is answers.length * 5)
+        // We'll scale it to 25 for display purposes
+        int maxPossibleScore = answers.length * 5;  // If all answers were 5
+        int overallScore = (totalScore * 25) / maxPossibleScore;  // Scale to 0-25
+        overallScore = Math.min(25, Math.max(0, overallScore));
 
         String category = categorizeScore(overallScore);
         String feedback = getFeedback(assessmentType, category, overallScore);
@@ -38,15 +56,16 @@ public class AssessmentService {
 
     /**
      * Categorize score into categories
+     * Updated thresholds for 0-25 scale
      */
     private static String categorizeScore(int score) {
-        if (score >= 70) {
+        if (score >= 18) {  // 18-25 (72%+)
             return "Excellent";
-        } else if (score >= 50) {
+        } else if (score >= 13) {  // 13-17 (52-68%)
             return "Good";
-        } else if (score >= 30) {
+        } else if (score >= 8) {  // 8-12 (32-48%)
             return "Fair";
-        } else {
+        } else {  // 0-7 (0-28%)
             return "Poor";
         }
     }

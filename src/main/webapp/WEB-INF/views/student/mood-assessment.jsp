@@ -237,23 +237,23 @@
                 <div class="question-title">How would you describe your current mood?</div>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" id="q1_1" name="answers" value="5" required>
+                        <input type="radio" id="q1_1" name="q1" value="5" required>
                         <label for="q1_1" class="option-label">Excellent - Very happy and positive</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q1_2" name="answers" value="4">
+                        <input type="radio" id="q1_2" name="q1" value="4">
                         <label for="q1_2" class="option-label">Good - Satisfied and content</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q1_3" name="answers" value="3">
+                        <input type="radio" id="q1_3" name="q1" value="3">
                         <label for="q1_3" class="option-label">Neutral - Neither good nor bad</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q1_4" name="answers" value="2">
+                        <input type="radio" id="q1_4" name="q1" value="2">
                         <label for="q1_4" class="option-label">Poor - Sad or discouraged</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q1_5" name="answers" value="1">
+                        <input type="radio" id="q1_5" name="q1" value="1">
                         <label for="q1_5" class="option-label">Very Poor - Severely depressed</label>
                     </div>
                 </div>
@@ -264,23 +264,23 @@
                 <div class="question-title">What is your energy level today?</div>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" id="q2_1" name="answers" value="5">
+                        <input type="radio" id="q2_1" name="q2" value="5">
                         <label for="q2_1" class="option-label">Very High - Energized and motivated</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q2_2" name="answers" value="4">
+                        <input type="radio" id="q2_2" name="q2" value="4">
                         <label for="q2_2" class="option-label">High - Feeling productive</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q2_3" name="answers" value="3">
+                        <input type="radio" id="q2_3" name="q2" value="3">
                         <label for="q2_3" class="option-label">Normal - Average energy</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q2_4" name="answers" value="2">
+                        <input type="radio" id="q2_4" name="q2" value="2">
                         <label for="q2_4" class="option-label">Low - Tired and fatigued</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q2_5" name="answers" value="1">
+                        <input type="radio" id="q2_5" name="q2" value="1">
                         <label for="q2_5" class="option-label">Very Low - Exhausted</label>
                     </div>
                 </div>
@@ -291,23 +291,23 @@
                 <div class="question-title">How connected do you feel to others?</div>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" id="q3_1" name="answers" value="5">
+                        <input type="radio" id="q3_1" name="q3" value="5">
                         <label for="q3_1" class="option-label">Very Connected - Feel loved and supported</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q3_2" name="answers" value="4">
+                        <input type="radio" id="q3_2" name="q3" value="4">
                         <label for="q3_2" class="option-label">Connected - Have good relationships</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q3_3" name="answers" value="3">
+                        <input type="radio" id="q3_3" name="q3" value="3">
                         <label for="q3_3" class="option-label">Somewhat Connected - Have some relationships</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q3_4" name="answers" value="2">
+                        <input type="radio" id="q3_4" name="q3" value="2">
                         <label for="q3_4" class="option-label">Disconnected - Few meaningful relationships</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q3_5" name="answers" value="1">
+                        <input type="radio" id="q3_5" name="q3" value="1">
                         <label for="q3_5" class="option-label">Very Disconnected - Feel isolated</label>
                     </div>
                 </div>
@@ -318,23 +318,23 @@
                 <div class="question-title">How well did you sleep last night?</div>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" id="q4_1" name="answers" value="5">
+                        <input type="radio" id="q4_1" name="q4" value="5">
                         <label for="q4_1" class="option-label">Excellent - Slept soundly all night</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q4_2" name="answers" value="4">
+                        <input type="radio" id="q4_2" name="q4" value="4">
                         <label for="q4_2" class="option-label">Good - Slept well with few interruptions</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q4_3" name="answers" value="3">
+                        <input type="radio" id="q4_3" name="q4" value="3">
                         <label for="q4_3" class="option-label">Fair - Some sleep issues</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q4_4" name="answers" value="2">
+                        <input type="radio" id="q4_4" name="q4" value="2">
                         <label for="q4_4" class="option-label">Poor - Many interruptions</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q4_5" name="answers" value="1">
+                        <input type="radio" id="q4_5" name="q4" value="1">
                         <label for="q4_5" class="option-label">Very Poor - Couldn't sleep</label>
                     </div>
                 </div>
@@ -345,23 +345,23 @@
                 <div class="question-title">How satisfied are you with your overall well-being?</div>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" id="q5_1" name="answers" value="5">
+                        <input type="radio" id="q5_1" name="q5" value="5">
                         <label for="q5_1" class="option-label">Very Satisfied - Life is good</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q5_2" name="answers" value="4">
+                        <input type="radio" id="q5_2" name="q5" value="4">
                         <label for="q5_2" class="option-label">Satisfied - Generally doing well</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q5_3" name="answers" value="3">
+                        <input type="radio" id="q5_3" name="q5" value="3">
                         <label for="q5_3" class="option-label">Neutral - Could be better or worse</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q5_4" name="answers" value="2">
+                        <input type="radio" id="q5_4" name="q5" value="2">
                         <label for="q5_4" class="option-label">Dissatisfied - Things are challenging</label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="q5_5" name="answers" value="1">
+                        <input type="radio" id="q5_5" name="q5" value="1">
                         <label for="q5_5" class="option-label">Very Dissatisfied - Struggling</label>
                     </div>
                 </div>
@@ -408,19 +408,68 @@
     }
 
     function nextQuestion() {
-        const selected = document.querySelector('input[name="answers"]:checked');
+        console.log('nextQuestion called, currentQuestion:', currentQuestion);
+        
+        // Get the CURRENT question container and check if ANY radio is selected in it
+        const currentQuestionContainer = document.querySelector('.question-container[data-question="' + currentQuestion + '"]');
+        console.log('currentQuestionContainer:', currentQuestionContainer);
+        
+        if (!currentQuestionContainer) {
+            alert('Error: Could not find current question container');
+            return;
+        }
+        
+        const selected = currentQuestionContainer.querySelector('input[name="q' + currentQuestion + '"]:checked');
+        console.log('selected:', selected);
+        
         if (!selected) {
             alert('Please select an answer before proceeding.');
             return;
         }
 
+        // Store the answer
+        answersArray[currentQuestion - 1] = selected.value;
+
         if (currentQuestion === totalQuestions) {
-            document.getElementById('assessmentForm').submit();
+            // Before submitting, populate hidden inputs with all answers
+            submitAssessment();
         } else {
             currentQuestion++;
             updateUI();
             window.scrollTo(0, 0);
         }
+    }
+
+    function submitAssessment() {
+        const form = document.getElementById('assessmentForm');
+        console.log('submitAssessment called');
+        
+        // Clear existing answer inputs
+        form.querySelectorAll('input[name="answer"]').forEach(el => el.remove());
+        form.querySelectorAll('input[name="answers"]').forEach(el => el.remove());
+        
+        // Collect all answers from the form
+        const collectedAnswers = [];
+        for (let i = 1; i <= totalQuestions; i++) {
+            const selected = document.querySelector('input[name="q' + i + '"]:checked');
+            console.log('Question', i, 'selected:', selected);
+            if (selected) {
+                collectedAnswers.push(selected.value);
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'answers';
+                input.value = selected.value;
+                form.appendChild(input);
+                console.log('Added answer:', selected.value);
+            } else {
+                console.log('No answer found for question', i);
+            }
+        }
+        
+        console.log('All collected answers:', collectedAnswers);
+        console.log('Form data before submit:', new FormData(form));
+        
+        form.submit();
     }
 
     function prevQuestion() {
@@ -444,6 +493,9 @@
 
     // Initialize
     updateUI();
+
+    // Debug: Log when page loads
+    console.log('Assessment page loaded. Total questions:', totalQuestions);
 </script>
 </body>
 </html>

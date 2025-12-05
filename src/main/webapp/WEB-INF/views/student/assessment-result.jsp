@@ -7,286 +7,172 @@
     <title>Assessment Complete - MindWell</title>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <style>
-        :root {
-            --teal: #6fd7cc;
-            --teal-dark: #3fb9a8;
-            --teal-light: #e8f9f7;
-            --muted: #7b8794;
-            --success: #28a745;
-            --card-bg: #ffffff;
-            --page-bg: #f6fbfa;
-            --radius: 12px;
-            --shadow: 0 10px 30px rgba(18,24,33,0.06);
-            --shadow-hover: 0 15px 40px rgba(18,24,33,0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        :root{
+            --teal:#6fd7cc;
+            --teal-dark:#3fb9a8;
+            --teal-light:#e8f9f7;
+            --muted:#7b8794;
+            --success:#28a745;
+            --card-bg:#ffffff;
+            --page-bg:#f6fbfa;
+            --radius:12px;
+            --shadow:0 10px 30px rgba(18,24,33,0.06);
+            --shadow-hover:0 15px 40px rgba(18,24,33,0.1);
+            --transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-            background: var(--page-bg);
-            color: #123;
-            line-height: 1.5;
+        *{box-sizing:border-box}
+        body{margin:0;font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:var(--page-bg);color:#123;line-height:1.5}
+        .page{max-width:1000px;margin:0 auto;padding:40px 20px}
+        
+        /* Header section */
+        .completion-header{text-align:center;margin-bottom:50px;animation:fadeInDown 0.6s ease-out}
+        .checkmark{
+            width:80px;height:80px;background:linear-gradient(135deg, var(--success), #1e8449);
+            border-radius:50%;display:flex;align-items:center;justify-content:center;
+            margin:0 auto 24px;font-size:48px;animation:popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)
         }
-        .page {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .completion-header h1{font-size:28px;font-weight:700;color:#123;margin:0 0 8px 0}
+        .completion-header p{color:var(--muted);font-size:14px;margin:0}
+        
+        /* Main results container */
+        .results-container{display:grid;grid-template-columns:1fr 320px;gap:24px;margin-bottom:40px}
+        .results-main{display:flex;flex-direction:column;gap:24px}
+        
+        /* Score card */
+        .score-card{
+            background:var(--card-bg);
+            border-radius:var(--radius);
+            padding:40px;
+            box-shadow:var(--shadow);
+            text-align:center;
+            animation:fadeInUp 0.6s ease-out 0.1s backwards
         }
-        .completion-header {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: slideDown 0.6s ease-out;
-        }
-        .checkmark {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--success), #1e8449);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 48px;
-            box-shadow: 0 10px 40px rgba(40, 167, 69, 0.3);
-            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        .completion-header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #123;
-            margin: 0;
-        }
-        .completion-header p {
-            color: var(--muted);
-            font-size: 16px;
-            margin: 8px 0 0 0;
-        }
-        .result-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 30px;
-        }
-        .result-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            animation: fadeInUp 0.6s ease-out backwards;
-            transition: var(--transition);
-        }
-        .result-card:hover { box-shadow: var(--shadow-hover); }
-        .result-card:nth-child(1) { animation-delay: 0.1s; }
-        .result-card:nth-child(2) { animation-delay: 0.2s; }
-        .score-section {
-            text-align: center;
-        }
-        .score-number {
-            font-size: 64px;
-            font-weight: 800;
-            color: var(--teal-dark);
-            margin: 0;
-            animation: countUp 1s ease-out;
-        }
-        .score-label {
-            color: var(--muted);
-            font-size: 13px;
-            margin: 8px 0 0 0;
-        }
-        .score-category {
-            display: inline-block;
-            background: var(--teal-light);
-            color: var(--teal-dark);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 12px;
-            margin-top: 16px;
-        }
-        .wellness-metrics {
-            display: grid;
-            gap: 12px;
-        }
-        .metric {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: #fbfffe;
-            border-radius: 10px;
-        }
-        .metric-name {
-            font-weight: 600;
-            color: #123;
-        }
-        .metric-value {
-            color: var(--teal-dark);
-            font-weight: 700;
-        }
-        .metric-bar {
-            width: 120px;
-            height: 6px;
-            background: #eef6f5;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        .metric-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--teal), var(--teal-dark));
-            border-radius: 6px;
-            animation: fillBar 1.5s ease-out 0.3s forwards;
-            width: 0;
-        }
-        .feedback-section {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-            animation: fadeInUp 0.6s ease-out 0.3s backwards;
-            border-left: 4px solid var(--teal-dark);
-        }
-        .feedback-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #123;
-            margin: 0 0 12px 0;
-        }
-        .feedback-text {
-            color: #123;
-            font-size: 14px;
-            line-height: 1.8;
-            margin: 0;
-        }
-        .recommendations-section {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            animation: fadeInUp 0.6s ease-out 0.4s backwards;
-        }
-        .recommendations-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #123;
-            margin: 0 0 16px 0;
-        }
-        .recommendations-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: grid;
-            gap: 12px;
-        }
-        .recommendation-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--teal-light) 0%, #f0fffe 100%);
-            border-radius: 10px;
-            border-left: 4px solid var(--teal);
-            transition: var(--transition);
-        }
-        .recommendation-item:hover {
-            background: linear-gradient(135deg, #d4f4f2 0%, #e8f9f7 100%);
-            transform: translateX(4px);
-        }
-        .check-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--success);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-        .button-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 30px;
-        }
-        .btn {
-            padding: 14px 24px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            font-size: 14px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-primary {
-            background: linear-gradient(180deg, var(--teal), var(--teal-dark));
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(63,185,168,0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(63,185,168,0.4);
-        }
-        .btn-secondary {
-            background: #fff;
-            border: 2px solid var(--teal);
-            color: var(--teal-dark);
-        }
-        .btn-secondary:hover {
-            background: var(--teal-light);
-        }
-        .share-section {
-            background: #f0f9f9;
-            border-left: 4px solid var(--teal);
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-top: 30px;
-            animation: fadeInUp 0.6s ease-out 0.5s backwards;
-        }
-        .share-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--teal-dark);
-            margin: 0 0 12px 0;
-        }
-        .share-text {
-            color: #123;
-            font-size: 13px;
-            margin: 0;
+        .score-label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:12px}
+        .score-number{font-size:56px;font-weight:800;color:var(--teal-dark);line-height:1}
+        .score-max{font-size:18px;color:var(--muted);margin-left:4px;display:inline}
+        .score-category{
+            display:inline-block;background:linear-gradient(135deg, var(--teal-light), #d4f4f2);
+            color:var(--teal-dark);padding:8px 16px;border-radius:20px;font-weight:700;font-size:12px;
+            margin-top:16px;border:1px solid var(--teal)
         }
         
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Wellness score display */
+        .wellness-score{
+            background:var(--card-bg);
+            border-radius:var(--radius);
+            padding:20px;
+            box-shadow:var(--shadow);
+            animation:fadeInUp 0.6s ease-out 0.2s backwards
         }
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0); }
-            50% { transform: scale(1.1); }
-            100% { opacity: 1; transform: scale(1); }
+        .wellness-score h4{margin:0 0 16px 0;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:700}
+        .progress-bar{
+            background:#eef6f5;border-radius:10px;height:12px;overflow:hidden;margin-bottom:12px
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .progress-fill{
+            background:linear-gradient(90deg, var(--teal), var(--teal-dark));
+            height:100%;border-radius:10px;animation:fillBar 1.5s ease-out 0.3s forwards;width:0
         }
-        @keyframes countUp {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
+        .wellness-percent{text-align:right;font-weight:700;color:var(--teal-dark);font-size:13px;margin-bottom:16px}
+        
+        /* Feedback section */
+        .feedback-section{
+            background:var(--card-bg);
+            border-radius:var(--radius);
+            padding:28px;
+            box-shadow:var(--shadow);
+            border-left:4px solid var(--teal-dark);
+            animation:fadeInUp 0.6s ease-out 0.2s backwards
         }
-        @keyframes fillBar {
-            to { width: 100%; }
+        .feedback-section h3{margin:0 0 12px 0;font-size:16px;font-weight:700;color:#123}
+        .feedback-section p{margin:0;color:#123;font-size:14px;line-height:1.8}
+        
+        /* Recommendations section */
+        .recommendations-section{
+            background:var(--card-bg);
+            border-radius:var(--radius);
+            padding:28px;
+            box-shadow:var(--shadow);
+            animation:fadeInUp 0.6s ease-out 0.3s backwards
         }
-
-        @media (max-width: 768px) {
-            .page { padding: 20px 16px; }
-            .result-grid { grid-template-columns: 1fr; }
-            .button-group { grid-template-columns: 1fr; }
-            .completion-header h1 { font-size: 24px; }
-            .score-number { font-size: 48px; }
+        .recommendations-section h3{margin:0 0 16px 0;font-size:16px;font-weight:700;color:#123}
+        .recommendations-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px}
+        .recommendation-item{
+            display:flex;align-items:flex-start;gap:12px;padding:14px;
+            background:linear-gradient(135deg, var(--teal-light) 0%, #f0fffe 100%);
+            border-radius:10px;border-left:4px solid var(--teal);transition:var(--transition)
+        }
+        .recommendation-item:hover{background:linear-gradient(135deg, #d4f4f2 0%, #e8f9f7 100%);transform:translateX(4px)}
+        .check-icon{
+            width:24px;height:24px;background:var(--success);
+            border-radius:50%;display:flex;align-items:center;justify-content:center;
+            color:#fff;font-size:14px;font-weight:bold;flex-shrink:0;margin-top:2px
+        }
+        .recommendation-item span{color:#123;font-size:14px;line-height:1.5}
+        
+        /* Sidebar */
+        .sidebar{display:flex;flex-direction:column;gap:20px}
+        .sidebar-card{
+            background:var(--card-bg);
+            border-radius:var(--radius);
+            padding:20px;
+            box-shadow:var(--shadow);
+            animation:fadeInUp 0.6s ease-out backwards
+        }
+        .sidebar-card:nth-child(1){animation-delay:0.1s}
+        .sidebar-card:nth-child(2){animation-delay:0.2s}
+        
+        .sidebar-card h4{margin:0 0 14px 0;font-size:14px;font-weight:700;color:#123}
+        .metric{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f2f6f5;font-size:13px}
+        .metric:last-child{border-bottom:none}
+        .metric-name{color:var(--muted);font-weight:600}
+        .metric-value{color:var(--teal-dark);font-weight:700}
+        
+        /* Action buttons */
+        .button-group{
+            display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px
+        }
+        .btn{
+            padding:14px 20px;border-radius:8px;border:none;cursor:pointer;
+            transition:var(--transition);font-weight:600;font-size:14px;text-decoration:none;
+            display:inline-block;text-align:center
+        }
+        .btn-primary{
+            background:linear-gradient(180deg, var(--teal), var(--teal-dark));
+            color:#fff;box-shadow:0 4px 12px rgba(63,185,168,0.3)
+        }
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(63,185,168,0.4)}
+        .btn-secondary{
+            background:#fff;border:2px solid #eef6f5;color:var(--teal-dark);
+        }
+        .btn-secondary:hover{background:var(--teal-light);border-color:var(--teal)}
+        
+        /* Animations */
+        @keyframes fadeInUp{
+            from{opacity:0;transform:translateY(20px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+        @keyframes fadeInDown{
+            from{opacity:0;transform:translateY(-20px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+        @keyframes popIn{
+            0%{opacity:0;transform:scale(0)}
+            50%{transform:scale(1.1)}
+            100%{opacity:1;transform:scale(1)}
+        }
+        @keyframes fillBar{
+            to{width:100%}
+        }
+        
+        /* Responsive */
+        @media (max-width:768px){
+            .page{padding:20px}
+            .results-container{grid-template-columns:1fr;padding-bottom:20px}
+            .completion-header{margin-bottom:30px}
+            .completion-header h1{font-size:24px}
+            .score-number{font-size:42px}
+            .score-card{padding:30px}
+            .button-group{grid-template-columns:1fr}
         }
     </style>
 </head>
@@ -299,66 +185,81 @@
         <p>Here are your personalized results</p>
     </div>
 
-    <!-- Score and Metrics Cards -->
-    <div class="result-grid">
-        <!-- Your Overall Score -->
-        <div class="result-card score-section">
-            <h3 style="color: var(--muted); font-size: 12px; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Your Overall Score</h3>
-            <div class="score-number"><c:out value="${score}"/></div>
-            <div class="score-label">/25</div>
-            <div class="score-category"><c:out value="${category}"/></div>
+
+    <!-- Check if error message exists -->
+    <c:if test="${not empty errorMessage}">
+        <div style="background: #fdecea; color: #611a15; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+            <strong>❗ Error:</strong> <c:out value="${errorMessage}"/>
         </div>
+    </c:if>
 
-        <!-- Wellness Metrics -->
-        <div class="result-card">
-            <h3 style="color: var(--muted); font-size: 12px; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Wellness Metrics</h3>
-            <div class="wellness-metrics">
-                <div class="metric">
-                    <div class="metric-name">Engagement</div>
-                    <div class="metric-value"><c:out value="${metrics.engagement}"/>%</div>
+    <!-- Results Grid -->
+    <div class="results-container">
+        <!-- Main Content -->
+        <div class="results-main">
+            <!-- Score Card -->
+            <div class="score-card">
+                <div class="score-label">Your Overall Score</div>
+                <div>
+                    <span class="score-number"><c:out value="${score}"/></span><span class="score-max">/25</span>
                 </div>
-                <div class="metric-bar">
-                    <div class="metric-fill" style="width: ${metrics.engagement}%;"></div>
-                </div>
+                <div class="score-category"><c:out value="${category}"/></div>
+            </div>
 
-                <div class="metric" style="margin-top: 16px;">
-                    <div class="metric-name">Consistency</div>
-                    <div class="metric-value"><c:out value="${metrics.consistency}"/>%</div>
+            <!-- Wellness Score -->
+            <div class="wellness-score">
+                <h4>Wellness Score</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${score * 4}%;"></div>
                 </div>
-                <div class="metric-bar">
-                    <div class="metric-fill" style="width: ${metrics.consistency}%;"></div>
-                </div>
+                <div class="wellness-percent"><c:out value="${score * 4}"/>%</div>
+            </div>
 
-                <div class="metric" style="margin-top: 16px;">
-                    <div class="metric-name">Progress</div>
-                    <div class="metric-value"><c:out value="${metrics.progress}"/>%</div>
-                </div>
-                <div class="metric-bar">
-                    <div class="metric-fill" style="width: ${metrics.progress}%;"></div>
-                </div>
+            <!-- Feedback Section -->
+            <div class="feedback-section">
+                <h3>💭 Personalized Feedback</h3>
+                <p><c:out value="${feedback}"/></p>
+            </div>
+
+            <!-- Recommendations Section -->
+            <div class="recommendations-section">
+                <h3>✨ Recommended Actions</h3>
+                <ul class="recommendations-list">
+                    <c:forEach items="${recommendations}" var="rec">
+                        <li class="recommendation-item">
+                            <div class="check-icon">✓</div>
+                            <span><c:out value="${rec}"/></span>
+                        </li>
+                    </c:forEach>
+                </ul>
             </div>
         </div>
-    </div>
 
-    <!-- Personalized Feedback -->
-    <div class="feedback-section">
-        <h3 class="feedback-title">💭 Personalized Feedback</h3>
-        <p class="feedback-text">
-            <c:out value="${feedback}"/>
-        </p>
-    </div>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Wellness Metrics -->
+            <div class="sidebar-card">
+                <h4>📊 Wellness Metrics</h4>
+                <div class="metric">
+                    <span class="metric-name">Engagement</span>
+                    <span class="metric-value"><c:out value="${metrics.engagement}"/>%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-name">Consistency</span>
+                    <span class="metric-value"><c:out value="${metrics.consistency}"/>%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-name">Progress</span>
+                    <span class="metric-value"><c:out value="${metrics.progress}"/>%</span>
+                </div>
+            </div>
 
-    <!-- Recommended Actions -->
-    <div class="recommendations-section">
-        <h3 class="recommendations-title">✨ Recommended Actions</h3>
-        <ul class="recommendations-list">
-            <c:forEach items="${recommendations}" var="rec">
-                <li class="recommendation-item">
-                    <div class="check-icon">✓</div>
-                    <div><c:out value="${rec}"/></div>
-                </li>
-            </c:forEach>
-        </ul>
+            <!-- Success Message -->
+            <div class="sidebar-card" style="background:linear-gradient(135deg, var(--teal-light), #f0fffe);border-left:4px solid var(--teal-dark)">
+                <h4 style="color:var(--teal-dark)">✅ Assessment complete!</h4>
+                <p style="margin:0;color:var(--teal-dark);font-size:13px;line-height:1.6">Your results have been saved.</p>
+            </div>
+        </div>
     </div>
 
     <!-- Action Buttons -->
@@ -366,17 +267,17 @@
         <a href="${pageContext.request.contextPath}/student/assessment/" class="btn btn-secondary">Take Another Assessment</a>
         <a href="${pageContext.request.contextPath}/student/home" class="btn btn-primary">View Dashboard</a>
     </div>
-
-    <!-- Share Section -->
-    <div class="share-section">
-        <h3 class="share-title">💡 Tip</h3>
-        <p class="share-text">Regular assessments help you track your mental health journey over time. Consider taking assessments weekly to monitor your progress and wellbeing trends.</p>
-    </div>
 </div>
 
 <script>
-    // Smooth scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Animate progress bar on load
+    window.addEventListener('load', function() {
+        const score = <c:out value="${score}"/>;
+        const progressFill = document.querySelector('.progress-fill');
+        if (progressFill && !isNaN(score)) {
+            progressFill.style.width = (score * 4) + '%';
+        }
+    });
 </script>
 </body>
 </html>

@@ -27,7 +27,7 @@ public class AssessmentController {
         }
 
         model.addAttribute("user", loggedInUser);
-        return "/student/assessment-list"; // => /WEB-INF/views/student/assessment-list.jsp
+        return "student/assessment-list"; // => /WEB-INF/views/student/assessment-list.jsp
     }
 
     // --- TAKE DAILY MOOD CHECK (GET) ---
@@ -42,7 +42,7 @@ public class AssessmentController {
         model.addAttribute("user", loggedInUser);
         model.addAttribute("assessmentType", "mood");
         model.addAttribute("duration", "2 min");
-        return "/student/mood-assessment";
+        return "student/mood-assessment";
     }
 
     // --- TAKE STRESS ASSESSMENT (GET) ---
@@ -57,7 +57,7 @@ public class AssessmentController {
         model.addAttribute("user", loggedInUser);
         model.addAttribute("assessmentType", "stress");
         model.addAttribute("duration", "5 min");
-        return "/student/stress-assessment";
+        return "student/stress-assessment";
     }
 
     // --- TAKE ANXIETY SCREENING (GET) ---
@@ -72,7 +72,7 @@ public class AssessmentController {
         model.addAttribute("user", loggedInUser);
         model.addAttribute("assessmentType", "anxiety");
         model.addAttribute("duration", "7 min");
-        return "/student/anxiety-assessment";
+        return "student/anxiety-assessment";
     }
 
     // --- TAKE GENERAL WELLBEING ASSESSMENT (GET) ---
@@ -87,7 +87,7 @@ public class AssessmentController {
         model.addAttribute("user", loggedInUser);
         model.addAttribute("assessmentType", "wellbeing");
         model.addAttribute("duration", "10 min");
-        return "/student/wellbeing-assessment";
+        return "student/wellbeing-assessment";
     }
 
     // --- SUBMIT ASSESSMENT (POST) ---
@@ -104,6 +104,15 @@ public class AssessmentController {
             return "redirect:/auth/login";
         }
 
+        // DEBUG: Print what we received
+        System.out.println("=== ASSESSMENT SUBMISSION DEBUG ===");
+        System.out.println("Assessment Type: " + assessmentType);
+        System.out.println("Answers received: " + (answersStr == null ? "NULL" : "Array of length " + answersStr.length));
+        if (answersStr != null) {
+            System.out.println("Answers array: " + java.util.Arrays.toString(answersStr));
+        }
+        System.out.println("===================================");
+        
         // Convert string answers to int array
         int[] answers = new int[0];
         if (answersStr != null && answersStr.length > 0) {
@@ -111,30 +120,46 @@ public class AssessmentController {
             for (int i = 0; i < answersStr.length; i++) {
                 try {
                     answers[i] = Integer.parseInt(answersStr[i]);
+                    System.out.println("Parsed answer[" + i + "] = " + answers[i]);
                 } catch (NumberFormatException e) {
+                    System.err.println("Failed to parse answer[" + i + "]: " + answersStr[i]);
                     answers[i] = 0;
                 }
             }
+        } else {
+            System.err.println("WARNING: No answers received!");
         }
 
-        // Calculate result
-        AssessmentResult result = AssessmentService.calculateResult(assessmentType, answers);
+        try {
+            // Calculate result
+            System.out.println("[AssessmentController] Received submit for type=" + assessmentType + " answersCount=" + (answers == null ? 0 : answers.length));
+            if (answers != null) {
+                System.out.println("[AssessmentController] Answers:" + java.util.Arrays.toString(answers));
+            }
 
-        // Add to model
-        model.addAttribute("user", loggedInUser);
-        model.addAttribute("assessmentType", assessmentType);
-        model.addAttribute("result", result);
-        model.addAttribute("score", result.getOverallScore());
-        model.addAttribute("category", result.getCategory());
-        model.addAttribute("feedback", result.getFeedback());
-        model.addAttribute("recommendations", result.getRecommendedActions());
-        model.addAttribute("metrics", result.getMetrics());
+            AssessmentResult result = AssessmentService.calculateResult(assessmentType, answers);
 
-        // Store in session for reference
-        session.setAttribute("lastAssessmentResult", result);
-        session.setAttribute("lastAssessmentType", assessmentType);
+            // Add to model
+            model.addAttribute("user", loggedInUser);
+            model.addAttribute("assessmentType", assessmentType);
+            model.addAttribute("result", result);
+            model.addAttribute("score", result.getOverallScore());
+            model.addAttribute("category", result.getCategory());
+            model.addAttribute("feedback", result.getFeedback());
+            model.addAttribute("recommendations", result.getRecommendedActions());
+            model.addAttribute("metrics", result.getMetrics());
 
-        return "/student/assessment-result"; // => /WEB-INF/views/student/assessment-result.jsp
+            // Store in session for reference
+            session.setAttribute("lastAssessmentResult", result);
+            session.setAttribute("lastAssessmentType", assessmentType);
+
+            return "student/assessment-result"; // => /WEB-INF/views/student/assessment-result.jsp
+        } catch (Exception ex) {
+            // Log and forward to the same JSP with an error message so page can render diagnostic info
+            ex.printStackTrace();
+            model.addAttribute("errorMessage", "An error occurred while processing the assessment: " + ex.getMessage());
+            return "student/assessment-result";
+        }
     }
 
     // --- VIEW ASSESSMENT RESULTS (GET) ---
@@ -162,6 +187,6 @@ public class AssessmentController {
         model.addAttribute("recommendations", result.getRecommendedActions());
         model.addAttribute("metrics", result.getMetrics());
 
-        return "/student/assessment-result";
+        return "student/assessment-result";
     }
 }
