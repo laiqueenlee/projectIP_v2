@@ -162,12 +162,7 @@
                     Chatbot
                 </a>
             </li>
-            <li class="navbar-item">
-                <a href="${pageContext.request.contextPath}/student/profile" 
-                   class="navbar-link ${pageContext.request.requestURI.contains('/profile') ? 'active' : ''}">
-                    Profile
-                </a>
-            </li>
+
             
             <c:if test="${not empty user}">
                 <li class="navbar-item">

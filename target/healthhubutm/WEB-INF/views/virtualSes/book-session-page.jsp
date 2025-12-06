@@ -1,5 +1,7 @@
-<!--STATIC-->
-<!-- Updated HTML/CSS to match the screenshot -->
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +53,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            height: 560px; /* Ensures all cards have same height */
+            height: 560px; 
         }
 
         .card img {
@@ -135,6 +137,8 @@
     </style>
 </head>
 <body>
+<%@ include file="/WEB-INF/views/includes/navbar.jsp" %>
+
 <div class="container">
 
     <h1>Book Counselling Session</h1>
@@ -156,7 +160,7 @@
                 <span>Fri 4:00 PM</span>
             </div>
 
-            <form action="/sessions/book" method="post">
+            <form action="${pageContext.request.contextPath}/sessions/book" method="post">
                 <!-- <select name="time">
                     <option>Mon 10:00 AM</option>
                     <option>Thu 2:00 PM</option>
@@ -180,7 +184,7 @@
                 <span>Fri 10am–12pm</span>
             </div>
 
-            <form action="/sessions/book" method="post">
+            <form action="${pageContext.request.contextPath}/sessions/book" method="post">
                 <!-- <select name="time">
                     <option>Mon 9am–1pm</option>
                     <option>Wed 3pm–6pm</option>
@@ -204,7 +208,7 @@
                 <span>Sat 1pm–4pm</span>
             </div>
 
-            <form action="/sessions/book" method="post">
+            <form action="${pageContext.request.contextPath}/sessions/book" method="post">
                 <!-- <select name="time">
                     <option>Tue 11am–3pm</option>
                     <option>Thu 9am–12pm</option>
