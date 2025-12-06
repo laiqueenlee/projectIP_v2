@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -343,7 +345,7 @@
         <div class="page">
             <div class="header">
                 <div>
-                    <div class="title">Welcome back, <c:out value="${displayName}"/> 👋</div>
+                    <div class="title">Welcome back, <c:out value="${displayName}"/> &#128075; </div>
                     <div class="subtitle">Here's your wellness journey at a glance</div>
                 </div>
                 <div style="text-align:right">
@@ -514,7 +516,7 @@
     // Handle quick action clicks
     function handleQuickAction(action){
     var routes = {
-            'assessment': '/assessments/new',
+            'assessment': '/student/assessment/',
             'content': '/content/browse',
             'forum': '/student/forum',    // <--- FIXED: Added /student prefix
             'progress': '/student/dashboard', // You might want to fix this too if it relies on student controller
