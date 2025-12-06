@@ -1,12 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <title>Home - MindWell</title>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root{
             --teal:#6fd7cc;
@@ -205,21 +206,6 @@
             border-color:var(--teal);
         }
 
-        /* Form enhancements */
-        input[type="text"], input[name="q"]{
-            width:100%;
-            padding:10px;
-            border-radius:8px;
-            border:1px solid #eef6f5;
-            transition:var(--transition);
-            font-family:inherit;
-        }
-        input:focus{
-            outline:none;
-            border-color:var(--teal);
-            box-shadow:0 0 0 3px var(--teal-light);
-        }
-
         /* Card headers */
         .card h4{
             margin:0 0 10px 0;
@@ -228,27 +214,65 @@
             color:#123;
         }
 
-        /* Chat link ( replaces emoji ) */
-        .chat-link{
-            display:inline-flex;
-            align-items:center;
-            gap:8px;
-            text-decoration:none;
-            color:inherit;
-            border-radius:8px;
-            padding:2px 6px;
-            transition:transform 0.12s ease, box-shadow 0.12s ease;
+        /* --- NEW AI CARD STYLING --- */
+        .ai-link-wrapper {
+            text-decoration: none;
+            display: block;
+            margin-top: 14px;
         }
-        .chat-link:focus, .chat-link:hover{
-            transform:translateY(-2px);
-            box-shadow:0 6px 14px rgba(63,185,168,0.12);
-            outline:none;
+
+        .ai-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid transparent; /* invisible border for hover state */
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out backwards;
+            animation-delay: 0.5s;
         }
-        .chat-icon{
-            width:28px;
-            height:28px;
-            display:inline-block;
-            flex:0 0 28px;
+
+        .ai-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+            border-color: var(--teal);
+        }
+
+        .ai-content {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .ai-title {
+            font-size: 18px; 
+            color: #123;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ai-subtitle {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .ai-action-icon {
+            font-size: 18px;
+            color: #e0e0e0;
+            transition: var(--transition);
+        }
+
+        /* Hover Effect: Arrow turns teal and moves right */
+        .ai-card:hover .ai-action-icon {
+            color: var(--teal);
+            transform: translateX(5px);
         }
 
         /* Animations */
@@ -263,29 +287,6 @@
         @keyframes countUp{
             from{opacity:0;transform:scale(0.5)}
             to{opacity:1;transform:scale(1)}
-        }
-
-        /* Loading states */
-        .loading{
-            position:relative;
-            pointer-events:none;
-            opacity:0.6;
-        }
-        .loading::after{
-            content:'';
-            position:absolute;
-            top:50%;
-            left:50%;
-            width:20px;
-            height:20px;
-            margin:-10px 0 0 -10px;
-            border:2px solid var(--teal);
-            border-top-color:transparent;
-            border-radius:50%;
-            animation:spin 0.6s linear infinite;
-        }
-        @keyframes spin{
-            to{transform:rotate(360deg)}
         }
 
         /* Responsive design */
@@ -305,7 +306,7 @@
         }
 
         /* Accessibility improvements */
-        .btn:focus, .quick-item:focus, .stat:focus{
+        .btn:focus, .quick-item:focus, .stat:focus, .ai-link-wrapper:focus .ai-card{
             outline:2px solid var(--teal);
             outline-offset:2px;
         }
@@ -317,7 +318,6 @@
 <body>
 <c:choose>
     <c:when test="${not empty loggedInUser}">
-        <!-- Compute safe display values / defaults -->
         <c:choose>
             <c:when test="${not empty loggedInUser.fullName}">
                 <c:set var="displayName" value="${loggedInUser.fullName}"/>
@@ -464,33 +464,29 @@
                         <div style="margin-top:8px"><a href="#" class="btn btn-primary">View Details</a></div>
                     </div>
 
-                    <div class="card" style="margin-top:14px">
-                        <h4>
-                            <a href="${pageContext.request.contextPath}/student/chatbot" class="chat-link" title="Open AI Chatbot" aria-label="Open AI Chatbot">
-                                <!-- inline chatbot SVG icon -->
-                                <svg class="chat-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                                    <rect x="2" y="3" width="20" height="14" rx="3" fill="#E8F9F7"/>
-                                    <rect x="6" y="7" width="3" height="3" rx="0.8" fill="#3FB9A8"/>
-                                    <rect x="11" y="7" width="7" height="3" rx="0.8" fill="#3FB9A8"/>
-                                    <path d="M4 17c0 1.104.895 2 2 2h12l2 3V5" stroke="#3FB9A8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                </svg>
-                                Ask AI
-                            </a>
-                        </h4>
-                        <form action="${pageContext.request.contextPath}/ai/query" method="post" onsubmit="return handleAIQuery(event)">
-                            <input name="q" placeholder="Ask something..." aria-label="Ask AI a question"/>
-                            <div style="margin-top:8px;text-align:right">
-                                <button type="submit" class="btn btn-primary">Ask</button>
+                    <a href="${pageContext.request.contextPath}/student/chatbot" class="ai-link-wrapper">
+                        <div class="ai-card">
+                            <div class="ai-content">
+                                <div class="ai-title">
+                                    Ask AI <i class="fas fa-robot" style="color:var(--teal);"></i>
+                                </div>
+                                <div class="ai-subtitle">
+                                    Ask me anything!
+                                </div>
                             </div>
-                        </form>
-                    </div>
+                            
+                            <div class="ai-action-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </a>
+
                 </aside>
             </div>
         </div>
     </c:when>
 
     <c:otherwise>
-        <!-- Not logged in -->
         <div style="padding:40px;text-align:center;animation:fadeInUp 0.5s ease-out">
             <h2>Please log in to view your dashboard</h2>
             <p><a href="${pageContext.request.contextPath}/auth/login" class="btn btn-primary">Go to Login</a></p>
@@ -518,8 +514,8 @@
     var routes = {
             'assessment': '/student/assessment/',
             'content': '/content/browse',
-            'forum': '/student/forum',    // <--- FIXED: Added /student prefix
-            'progress': '/student/dashboard', // You might want to fix this too if it relies on student controller
+            'forum': '/student/forum',
+            'progress': '/student/dashboard',
             'session': '/sessions/book'
         };
         
@@ -527,25 +523,6 @@
         if(routes[action]){
             window.location.href = contextPath + routes[action];
         }
-    }
-
-    // Handle AI query form
-    function handleAIQuery(event){
-        var form = event.target;
-        var input = form.querySelector('input[name="q"]');
-        
-        if(!input.value.trim()){
-            event.preventDefault();
-            input.focus();
-            return false;
-        }
-        
-        // Add loading state
-        var btn = form.querySelector('button');
-        btn.classList.add('loading');
-        btn.disabled = true;
-        
-        return true;
     }
 
     // Add keyboard accessibility to stat cards
