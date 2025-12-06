@@ -170,7 +170,9 @@
             <div class="schedule-section">
                 <div class="section-header">
                     <h2>Schedule Sessions</h2>
-                    <button class="btn-manage">Manage Upcoming Session</button>
+                    <button class="btn-manage" onclick="window.location.href='${pageContext.request.contextPath}/sessions/confirm'">
+                        Manage Upcoming Session
+                    </button>
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card"><small>Today's Sessions</small><strong>4</strong></div>
