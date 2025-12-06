@@ -192,6 +192,11 @@
             color:#fff;
             box-shadow:0 4px 12px rgba(63,185,168,0.3);
         }
+        .btn-primary-grey{
+            background:rgb(232, 229, 229);
+            color:black;
+            box-shadow:0 4px 12px rgba(63,185,168,0.3);
+        }
         .btn-primary:hover{
             transform:translateY(-2px);
             box-shadow:0 6px 20px rgba(63,185,168,0.4);
@@ -460,8 +465,21 @@
 
                     <div class="card" style="margin-top:14px">
                         <h4>📅 Upcoming</h4>
-                        <div style="font-size:13px;color:var(--muted)">Counseling Session with Dr Mitchell</div>
-                        <div style="margin-top:8px"><a href="#" class="btn btn-primary">View Details</a></div>
+                        <div style="font-size:13px;color:var(--muted)"><b>Counseling Session with Dr Mitchell</b></div>
+                        <br>
+                        <div style="margin-top:8px">
+                            <a href="${pageContext.request.contextPath}/sessions/detail" class="btn btn-primary-grey">
+                                View Details
+                            </a>
+                        </div>
+
+                        &nbsp;
+                        
+                        <div style="margin-top:8px">
+                            <a href="${pageContext.request.contextPath}/sessions/meeting" class="btn btn-primary">
+                                Start Session
+                            </a>
+                        </div>
                     </div>
 
                     <a href="${pageContext.request.contextPath}/student/chatbot" class="ai-link-wrapper">

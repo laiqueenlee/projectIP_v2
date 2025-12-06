@@ -120,8 +120,10 @@ public class VirtualSesController {
 
     
     @GetMapping("/meeting")
-    public String virtualMeetingPage(@RequestParam("sessionId") String sessionId,
-                                     HttpSession session,
+    // public String virtualMeetingPage(@RequestParam("sessionId") String sessionId,
+    //                                  HttpSession session,
+    //                                  Model model) {
+    public String virtualMeetingPage(HttpSession session,
                                      Model model) {
         User user = (User) session.getAttribute("loggedInUser");
         if (user == null) {
