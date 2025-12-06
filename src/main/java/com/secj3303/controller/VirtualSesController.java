@@ -24,74 +24,67 @@ import com.secj3303.model.VirtualSessionRepository;
 @RequestMapping("/sessions")
 public class VirtualSesController {
 
-    // =====================
-    // STUDENT BOOK SESSION
-    // =====================
+    
     @GetMapping("/book")
     public String studBookSes(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("loggedInUser");
-        if (user == null || user.getRole() != Role.STUDENT) {
-            return "redirect:/auth/login";
-        }
+        // User user = (User) session.getAttribute("loggedInUser");
+        // if (user == null || user.getRole() != Role.STUDENT) {
+        //     return "redirect:/auth/login";
+        // }
 
-        // Provide all available MHPs for dropdown/cards
-        List<User> mhps = UserRepository.getAllUsers().stream()
-                .filter(u -> u.getRole() == Role.MENTAL_HEALTH_PROFESSIONAL)
-                .toList();
-        model.addAttribute("user", user);
-        model.addAttribute("mhps", mhps);
+        // List<User> mhps = UserRepository.getAllUsers().stream()
+        //         .filter(u -> u.getRole() == Role.MENTAL_HEALTH_PROFESSIONAL)
+        //         .toList();
+        // model.addAttribute("user", user);
+        // model.addAttribute("mhps", mhps);
 
-        // Prepare available slots map
-        Map<String, List<String>> slotsMap = mhps.stream()
-                .collect(Collectors.toMap(
-                        User::getUsername,
-                        u -> MhpSlotRepository.getAvailableSlots(u.getUsername())
-                ));
-        model.addAttribute("availableSlotsMap", slotsMap);
+        // Map<String, List<String>> slotsMap = mhps.stream()
+        //         .collect(Collectors.toMap(
+        //                 User::getUsername,
+        //                 u -> MhpSlotRepository.getAvailableSlots(u.getUsername())
+        //         ));
+        // model.addAttribute("availableSlotsMap", slotsMap);
 
-        return "virtualSes/book-session-page"; // <-- no leading slash
-    }
+        return "virtualSes/book-session-page"; 
+    } 
 
     @PostMapping("/book")
-    public String processStudentBooking(@RequestParam("mhpUsername") String mhpUsername,
-                                        @RequestParam("time") String time,
-                                        HttpSession session,
+    // public String processStudentBooking(@RequestParam("mhpUsername") String mhpUsername,
+    //                                     @RequestParam("time") String time,
+    //                                     HttpSession session,
+    //                                     Model model) {
+    public String processStudentBooking(HttpSession session,
                                         Model model) {
-        User student = (User) session.getAttribute("loggedInUser");
-        if (student == null || student.getRole() != Role.STUDENT) {
-            return "redirect:/auth/login";
-        }
+        // User student = (User) session.getAttribute("loggedInUser");
+        // if (student == null || student.getRole() != Role.STUDENT) {
+        //     return "redirect:/auth/login";
+        // }
 
-        // Look up the MHP by username
-        User mhp = UserRepository.findByUsername(mhpUsername);
-        if (mhp == null || mhp.getRole() != Role.MENTAL_HEALTH_PROFESSIONAL) {
-            model.addAttribute("error", "Selected MHP does not exist.");
-            return studBookSes(session, model);
-        }
+        // User mhp = UserRepository.findByUsername(mhpUsername);
+        // if (mhp == null || mhp.getRole() != Role.MENTAL_HEALTH_PROFESSIONAL) {
+        //     model.addAttribute("error", "Selected MHP does not exist.");
+        //     return studBookSes(session, model);
+        // }
 
-        // Check if the selected time is still available
-        List<String> availableSlots = MhpSlotRepository.getAvailableSlots(mhp.getUsername());
-        if (!availableSlots.contains(time)) {
-            model.addAttribute("error", "Selected slot is no longer available.");
-            return studBookSes(session, model);
-        }
+        // List<String> availableSlots = MhpSlotRepository.getAvailableSlots(mhp.getUsername());
+        // if (!availableSlots.contains(time)) {
+        //     model.addAttribute("error", "Selected slot is no longer available.");
+        //     return studBookSes(session, model);
+        // }
 
-        // Create new virtual session (pending MHP confirmation)
-        VirtualSession sessionObj = new VirtualSession();
-        sessionObj.setStudent(student);
-        sessionObj.setMhp(mhp);
-        sessionObj.setTime(time);
-        sessionObj.setConfirmed(false);
-        VirtualSessionRepository.save(sessionObj);
+        // VirtualSession sessionObj = new VirtualSession();
+        // sessionObj.setStudent(student);
+        // sessionObj.setMhp(mhp);
+        // sessionObj.setTime(time);
+        // sessionObj.setConfirmed(false);
+        // VirtualSessionRepository.save(sessionObj);
 
-        model.addAttribute("message", "Session request sent. Waiting for MHP confirmation.");
-        //return studBookSes(session, model);
+        // model.addAttribute("message", "Session request sent. Waiting for MHP confirmation.");
         return "virtualSes/book-session-form";
     }
 
-    // =====================
-    // MHP CONFIRM SESSION
-    // =====================
+    
+
     @GetMapping("/confirm")
     public String mhpConfirmPage(HttpSession session, Model model) {
         User mhp = (User) session.getAttribute("loggedInUser");
@@ -99,24 +92,22 @@ public class VirtualSesController {
             return "redirect:/login";
         }
 
-        model.addAttribute("pendingSessions",
-                VirtualSessionRepository.findPendingByMhpUsername(mhp.getUsername()));
+        // model.addAttribute("pendingSessions",
+        //         VirtualSessionRepository.findPendingByMhpUsername(mhp.getUsername()));
         return "mhp-confirm-session"; // JSP page for MHP to confirm sessions
     }
 
     @PostMapping("/confirm")
     public String processMhpConfirmation(@RequestParam("sessionId") String sessionId) {
-        VirtualSession sessionObj = VirtualSessionRepository.findById(sessionId);
-        if (sessionObj != null) {
-            sessionObj.setConfirmed(true);
-            VirtualSessionRepository.save(sessionObj);
-        }
+        // VirtualSession sessionObj = VirtualSessionRepository.findById(sessionId);
+        // if (sessionObj != null) {
+        //     sessionObj.setConfirmed(true);
+        //     VirtualSessionRepository.save(sessionObj);
+        // }
         return "redirect:/sessions/confirm";
     }
 
-    // =====================
-    // VIRTUAL SESSION MEETING PAGE
-    // =====================
+    
     @GetMapping("/meeting")
     public String virtualMeetingPage(@RequestParam("sessionId") String sessionId,
                                      HttpSession session,
@@ -126,20 +117,20 @@ public class VirtualSesController {
             return "redirect:/login";
         }
 
-        VirtualSession sessionObj = VirtualSessionRepository.findById(sessionId);
-        if (sessionObj == null) {
-            model.addAttribute("error", "Session not found");
-            return "error";
-        }
+        // VirtualSession sessionObj = VirtualSessionRepository.findById(sessionId);
+        // if (sessionObj == null) {
+        //     model.addAttribute("error", "Session not found");
+        //     return "error";
+        // }
 
-        // Only allow student or MHP involved to enter
-        if (!sessionObj.getStudent().getUsername().equals(user.getUsername()) &&
-            !sessionObj.getMhp().getUsername().equals(user.getUsername())) {
-            model.addAttribute("error", "Access denied");
-            return "error";
-        }
+        // // Only allow student or MHP involved to enter
+        // if (!sessionObj.getStudent().getUsername().equals(user.getUsername()) &&
+        //     !sessionObj.getMhp().getUsername().equals(user.getUsername())) {
+        //     model.addAttribute("error", "Access denied");
+        //     return "error";
+        // }
 
-        model.addAttribute("session", sessionObj);
-        return "virtual-session-meeting"; // single JSP for both roles
+        // model.addAttribute("session", sessionObj);
+        return "virtual-session-meeting"; 
     }
 }
