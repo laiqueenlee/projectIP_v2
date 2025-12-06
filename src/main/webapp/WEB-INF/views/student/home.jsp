@@ -408,21 +408,21 @@
                                 <div style="font-weight:700">Managing Study Stress</div>
                                 <div class="rec-meta">Video · 15 min · 95% match</div>
                             </div>
-                            <div><a href="#" class="btn btn-ghost">View</a></div>
+                            <div><a href="${pageContext.request.contextPath}/student/content/study-stress" class="btn btn-ghost">View</a></div>
                         </div>
                         <div class="rec-item">
                             <div>
                                 <div style="font-weight:700">Sleep Hygiene Basics</div>
                                 <div class="rec-meta">Article · 5 min · 88% match</div>
                             </div>
-                            <div><a href="#" class="btn btn-ghost">View</a></div>
+                            <div><a href="${pageContext.request.contextPath}/student/content/sleep-hygiene" class="btn btn-ghost">View</a></div>
                         </div>
                         <div class="rec-item">
                             <div>
                                 <div style="font-weight:700">Breathing Exercises</div>
                                 <div class="rec-meta">Interactive · 10 min · 92% match</div>
                             </div>
-                            <div><a href="#" class="btn btn-ghost">View</a></div>
+                            <div><a href="${pageContext.request.contextPath}/student/content/breathing" class="btn btn-ghost">View</a></div>
                         </div>
                     </div>
 
