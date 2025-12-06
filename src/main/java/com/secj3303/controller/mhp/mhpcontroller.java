@@ -103,4 +103,20 @@ public class mhpcontroller {
 
         return "redirect:/mhp/home";
     }
+
+    @GetMapping("/chatbot")
+    public String showChatbotPage(Model model, HttpSession session) {
+        // 1. Security Check
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null || loggedInUser.getRole() != Role.MENTAL_HEALTH_PROFESSIONAL) {
+            return "redirect:/auth/login";
+        }
+
+        // 2. Add user to model (for the Navbar "Hello, Dr. Name")
+        model.addAttribute("user", loggedInUser);
+
+        // 3. Return the JSP view
+        // This assumes your file is located at: /WEB-INF/views/mhp/chatbot.jsp
+        return "mhp/chatbot"; 
+    }
 }
