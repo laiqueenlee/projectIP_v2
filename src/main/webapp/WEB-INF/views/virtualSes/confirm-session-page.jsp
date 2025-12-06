@@ -164,7 +164,6 @@
                 </tr>
             </table>
 
-            <!-- Example of a confirmed session -->
             <table class="session-item">
                 <tr>
                     <td class="session-info">
@@ -186,13 +185,12 @@
                         </table>
                     </td>
                     <td class="session-actions">
-                        <a href="${pageContext.request.contextPath}/sessions/detail/${session.id}" class="btn-view">View Details</a>
-                        <a href="${pageContext.request.contextPath}/sessions/meeting/${session.meetingId}" class="btn-start">&#127909; Start Session</a>
+                        <a href="${pageContext.request.contextPath}/sessions/detail" class="btn-view">View Details</a>
+                        <a href="${pageContext.request.contextPath}/sessions/meeting" class="btn-start">&#127909; Start Session</a>
                     </td>
                 </tr>
             </table>
 
-            <!-- Example of a pending session -->
             <table class="session-item">
                 <tr>
                     <td class="session-info">
@@ -214,7 +212,7 @@
                         </table>
                     </td>
                     <td class="session-actions">
-                        <a href="${pageContext.request.contextPath}/sessions/detail/${session.id}" class="btn-view">View Details</a>
+                        <a href="${pageContext.request.contextPath}/sessions/detail" class="btn-view">View Details</a>
                         <span class="btn-start disabled">&#127909; Start Session</span>
                     </td>
                 </tr>

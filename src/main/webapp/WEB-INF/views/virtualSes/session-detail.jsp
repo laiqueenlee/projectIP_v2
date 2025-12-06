@@ -1,4 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,7 +58,6 @@
             margin-bottom: 20px;
         }
 
-        /* Modern button styles */
         .btn {
             padding: 10px 20px;
             border-radius: 9999px;  /* pill shape */
@@ -100,6 +101,10 @@
     </style>
 </head>
 <body>
+
+<c:if test="${role == 'STUDENT'}">
+    <jsp:include page="/WEB-INF/views/includes/navbar.jsp" />
+</c:if>
 
 <div class="container">
 
@@ -147,18 +152,28 @@
 
         <div style="display:flex; justify-content:space-between; margin-top:10px;">
 
-            <div>
-                <a href="${pageContext.request.contextPath}/sessions/confirm">
-                    <button class="btn btn-back">
+            <!-- <c:if test="${roles == 'COUNSELOR'}"> -->
+                <div>
+                    <a href="${pageContext.request.contextPath}/sessions/confirm" class="btn btn-back">
                         <i class="fas fa-arrow-left"></i> Back to Sessions
-                    </button>
-                </a>
-            </div>
+                    </a>
+                </div>
+                <div>
+                    <button class="btn btn-approve"><i class="fas fa-check"></i> Approve</button>
+                    <button class="btn btn-reject"><i class="fas fa-times"></i> Reject</button>
+                </div>
 
-            <div>
-                <button class="btn btn-approve"><i class="fas fa-check"></i> Approve</button>
-                <button class="btn btn-reject"><i class="fas fa-times"></i> Reject</button>
-            </div>
+            <!-- </c:if> -->
+
+            <!-- <c:if test="${roles == 'STUDENT'}">
+                <div>
+                    <a href="${pageContext.request.contextPath}/student/home">
+                        <button class="btn btn-back">
+                            <i class="fas fa-arrow-left"></i> Back to Home
+                        </button>
+                    </a>
+                </div>
+            </c:if> -->
 
         </div>
 
