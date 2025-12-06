@@ -105,8 +105,6 @@
                         <a href="${pageContext.request.contextPath}/mhp/edit-content?id=${item.id}" title="Edit Content">
                             <i class="fas fa-pen"></i>
                         </a>
-                        <!-- VIEW BUTTON (Placeholder) -->
-                        <i class="fas fa-eye-slash"></i>
                         <!-- DELETE BUTTON -->
                         <a href="${pageContext.request.contextPath}/mhp/delete-content?id=${item.id}" 
                            onclick="return confirm('Are you sure you want to delete this content?');" 
