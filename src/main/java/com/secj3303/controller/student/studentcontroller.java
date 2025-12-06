@@ -112,5 +112,34 @@ public class studentcontroller {
         return "/student/chatbot";
     }
 
+
+    // ... inside StudentController class ...
+
+    // Mapping for Study Stress Page
+    @GetMapping("/content/study-stress")
+    public String showStudyStressPage(Model model, HttpSession session) {
+        // Security check (optional but recommended)
+        if (session.getAttribute("loggedInUser") == null) {
+            return "redirect:/auth/login";
+        }
+        
+        // Return the path to the JSP (without .jsp extension)
+        // This assumes your JSP is at /WEB-INF/views/student/study_stress.jsp
+        return "student/study_stress"; 
+    }
+    
+    // Mapping for Sleep Hygiene Page
+    @GetMapping("/content/sleep-hygiene")
+    public String showSleepHygienePage(Model model, HttpSession session) {
+        if (session.getAttribute("loggedInUser") == null) { return "redirect:/auth/login"; }
+        return "student/sleep_hygiene"; 
+    }
+
+    // Mapping for Breathing Exercise Page
+    @GetMapping("/content/breathing")
+    public String showBreathingPage(Model model, HttpSession session) {
+        if (session.getAttribute("loggedInUser") == null) { return "redirect:/auth/login"; }
+        return "student/breathing"; 
+    }
 }
 

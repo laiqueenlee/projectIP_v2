@@ -41,12 +41,64 @@
         .stat-card { border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; background: #fff; }
         .stat-card small { color: #95a5a6; font-size: 0.85rem; display: block; margin-bottom: 5px; }
         .stat-card strong { font-size: 1.8rem; color: #00d2d3; }
-        .ai-card { border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #fff; height: fit-content; }
-        .ai-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .ai-header h3 { font-size: 1.2rem; color: #2c3e50; }
-        .ai-input-box { position: relative; width: 100%; }
-        .ai-input-box input { width: 100%; padding: 12px 40px 12px 15px; border: 1px solid #ddd; border-radius: 20px; outline: none; font-size: 0.9rem; }
-        .ai-input-box i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #95a5a6; cursor: pointer; }
+/* --- Updated AI Card Styling --- */
+        .ai-link-wrapper {
+            text-decoration: none; /* Remove underline from link */
+            display: block; /* Make link fill the width */
+        }
+
+        .ai-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 24px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Hover Effect: Pop up slightly and change border color */
+        .ai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 210, 211, 0.15); /* Soft teal shadow */
+            border-color: #00d2d3;
+        }
+
+        .ai-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ai-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ai-subtitle {
+            font-size: 0.95rem;
+            color: #95a5a6;
+        }
+
+        .ai-action-icon {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            transition: 0.3s;
+        }
+
+        /* On hover, turn the arrow teal and move it right */
+        .ai-card:hover .ai-action-icon {
+            color: #00d2d3;
+            transform: translateX(5px);
+        }
         
         /* New Link Styling for Actions */
         .actions a { color: inherit; text-decoration: none; }
@@ -131,15 +183,23 @@
         </div>
 
         <div class="sidebar-column">
-            <div class="ai-card">
-                <div class="ai-header">
-                    <h3>Ask AI <i class="fas fa-robot" style="color:#00d2d3;"></i></h3>
+            <a href="${pageContext.request.contextPath}/mhp/chatbot" class="ai-link-wrapper">
+                <div class="ai-card">
+                    <div class="ai-content">
+                        <div class="ai-title">
+                            Ask AI <i class="fas fa-robot" style="color:#00d2d3;"></i>
+                        </div>
+                        
+                        <div class="ai-subtitle">
+                            Ask me anything!
+                        </div>
+                    </div>
+                    
+                    <div class="ai-action-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
                 </div>
-                <div class="ai-input-box">
-                    <input type="text" placeholder="Feel free to ask any!">
-                    <i class="fas fa-paper-plane"></i>
-                </div>
-            </div>
+            </a>
         </div>
     </div>
 </body>
