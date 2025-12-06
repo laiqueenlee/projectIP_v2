@@ -1,24 +1,26 @@
 package com.secj3303.controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.secj3303.model.MhpSlotRepository;
+// import com.secj3303.model.MhpSlotRepository;
 import com.secj3303.model.Role;
 import com.secj3303.model.User;
-import com.secj3303.model.UserRepository;
-import com.secj3303.model.VirtualSession;
+// import com.secj3303.model.UserRepository;
+// import com.secj3303.model.VirtualSession;
 import com.secj3303.model.VirtualSessionRepository;
+import com.secj3303.model.VirtualSession;
 
 @Controller
 @RequestMapping("/sessions")
@@ -55,10 +57,10 @@ public class VirtualSesController {
     //                                     Model model) {
     public String processStudentBooking(HttpSession session,
                                         Model model) {
-        // User student = (User) session.getAttribute("loggedInUser");
-        // if (student == null || student.getRole() != Role.STUDENT) {
-        //     return "redirect:/auth/login";
-        // }
+        User student = (User) session.getAttribute("loggedInUser");
+        if (student == null || student.getRole() != Role.STUDENT) {
+            return "redirect:/auth/login";
+        }
 
         // User mhp = UserRepository.findByUsername(mhpUsername);
         // if (mhp == null || mhp.getRole() != Role.MENTAL_HEALTH_PROFESSIONAL) {
@@ -89,12 +91,12 @@ public class VirtualSesController {
     public String mhpConfirmPage(HttpSession session, Model model) {
         User mhp = (User) session.getAttribute("loggedInUser");
         if (mhp == null || mhp.getRole() != Role.MENTAL_HEALTH_PROFESSIONAL) {
-            return "redirect:/login";
+            return "redirect:/auth/login";
         }
 
         // model.addAttribute("pendingSessions",
         //         VirtualSessionRepository.findPendingByMhpUsername(mhp.getUsername()));
-        return "mhp-confirm-session"; // JSP page for MHP to confirm sessions
+        return "virtualSes/confirm-session-page"; 
     }
 
     @PostMapping("/confirm")
@@ -107,6 +109,15 @@ public class VirtualSesController {
         return "redirect:/sessions/confirm";
     }
 
+        //@GetMapping("/detail/{sessionId}")
+        @GetMapping("/detail")
+        //public String sessionDetail(@PathVariable String sessionId, Model model, HttpSession httpSession) {
+        public String sessionDetail(Model model, HttpSession httpSession) {
+            // VirtualSession sessionObj = VirtualSessionRepository.findById(sessionId);
+            // model.addAttribute("session", sessionObj);
+            return "virtualSes/session-detail"; 
+        }
+
     
     @GetMapping("/meeting")
     public String virtualMeetingPage(@RequestParam("sessionId") String sessionId,
@@ -114,7 +125,7 @@ public class VirtualSesController {
                                      Model model) {
         User user = (User) session.getAttribute("loggedInUser");
         if (user == null) {
-            return "redirect:/login";
+            return "redirect:/auth/login";
         }
 
         // VirtualSession sessionObj = VirtualSessionRepository.findById(sessionId);
@@ -131,6 +142,6 @@ public class VirtualSesController {
         // }
 
         // model.addAttribute("session", sessionObj);
-        return "virtual-session-meeting"; 
+        return "virtualSes/virtual-session-meeting"; 
     }
 }
