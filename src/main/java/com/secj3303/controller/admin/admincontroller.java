@@ -13,7 +13,7 @@ import com.secj3303.model.User;
 
 @Controller
 @RequestMapping("/admin")
-public class adminController {
+public class admincontroller {
 
     @GetMapping("/home")
     public String showAdminHomePage(Model model, HttpSession session) {
