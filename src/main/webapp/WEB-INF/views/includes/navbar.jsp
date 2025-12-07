@@ -145,12 +145,6 @@
                 </a>
             </li>
             <li class="navbar-item">
-                <a href="${pageContext.request.contextPath}/student/dashboard" 
-                   class="navbar-link ${pageContext.request.requestURI.contains('/dashboard') ? 'active' : ''}">
-                    Dashboard
-                </a>
-            </li>
-            <li class="navbar-item">
                 <a href="${pageContext.request.contextPath}/student/forum" 
                    class="navbar-link ${pageContext.request.requestURI.contains('/forum') ? 'active' : ''}">
                     Forum

@@ -395,10 +395,10 @@
                                 <strong>Join Forum</strong>
                                 <small>Connect with peers</small>
                             </div>
-                            <div class="quick-item" tabindex="0" role="button" onclick="handleQuickAction('progress')">
+                            <!--<div class="quick-item" tabindex="0" role="button" onclick="handleQuickAction('progress')">
                                 <strong>View Progress</strong>
                                 <small>Track your journey</small>
-                            </div>
+                            </div>-->
                             <div class="quick-item" tabindex="0" role="button" onclick="handleQuickAction('session')">
                                 <strong>Book Session</strong>
                                 <small>Schedule counselling</small>
