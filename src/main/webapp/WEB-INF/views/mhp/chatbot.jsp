@@ -257,7 +257,7 @@
     </style>
 </head>
 <body>
-    <jsp:include file="/WEB-INF/views/includes/mhp-navbar.jsp" />
+    <jsp:include page="/WEB-INF/views/includes/mhp-navbar.jsp" />
     <c:choose>
         <c:when test="${not empty loggedInUser.fullName}">
             <c:set var="displayName" value="${loggedInUser.fullName}"/>
