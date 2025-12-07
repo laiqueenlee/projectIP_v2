@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <style>
     .navbar {
@@ -147,13 +149,13 @@
             <li class="navbar-item">
                 <a href="${pageContext.request.contextPath}/mhp/create-content" 
                    class="navbar-link ${pageContext.request.requestURI.contains('/create-content') ? 'active' : ''}">
-                    Content
+                    Create Content
                 </a>
             </li>
             <li class="navbar-item">
                 <a href="${pageContext.request.contextPath}/sessions/confirm" 
                    class="navbar-link ${pageContext.request.requestURI.contains('/confirm') ? 'active' : ''}">
-                    Forum
+                    Manage Sessions
                 </a>
             </li>
             <li class="navbar-item">
