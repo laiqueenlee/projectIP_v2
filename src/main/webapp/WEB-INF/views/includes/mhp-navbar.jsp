@@ -166,7 +166,7 @@
             </li>
 
             
-            <c:if test="${not empty user}">
+            <!-- <c:if test="${not empty user}">
                 <li class="navbar-item">
                     <div class="user-info">
                         <div class="user-avatar">
@@ -175,7 +175,18 @@
                         <span>${user.username}</span>
                     </div>
                 </li>
-            </c:if>
+            </c:if> -->
+
+            <li class="navbar-item">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <!-- ${fn:substring(displayName, 0, 1).toUpperCase()} -->
+                         M
+                    </div>
+                    <!-- <span>${displayName}</span> -->
+                     <span>mhp1</span>
+                </div>
+            </li>
             
             <li class="navbar-item">
                 <form action="${pageContext.request.contextPath}/mhp/logout" method="get" style="margin: 0;">
