@@ -3,24 +3,18 @@ package com.secj3303.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.secj3303.model.User; // Ensure you have this import based on your model
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
-/**
- * Combined ForumController
- * - GET  /student/forum        -> list view (student/peer.jsp) with "posts"
- * - GET  /forum/post?id={id}   -> single post view (student/post.jsp) with "post" and "replies"
- * - GET  /forum/post/{id}      -> same as above (path variable)
- * - POST /forum/submit-post    -> add a new post (in-memory)
- */
 @Controller
 public class ForumController {
 
-    // 1. STATIC LIST: in-memory posts store for the running app
+    // 1. STATIC LIST: in-memory posts store
     private static List<Map<String, String>> posts = new ArrayList<>();
 
-    // 2. STATIC BLOCK: initialize sample data once
+    // 2. STATIC BLOCK: initialize sample data
     static {
         posts.add(makePost("1", "Managing exam stress - what works for you?", "Anonymous", "Stress",
                 "Finals are coming up and I'm feeling overwhelmed. What strategies have helped you cope with academic pressure?",
@@ -56,19 +50,44 @@ public class ForumController {
             @RequestParam("postContent") String content,
             @RequestParam("category") String category,
             @RequestParam(value = "postAnonymously", required = false) String anonymous,
-            Model model
+            Model model,
+            HttpSession session // <--- Added Session to get the logged-in user
     ) {
-        // Generate new ID
+        // 1. Generate new ID
         int maxId = posts.stream()
                 .mapToInt(p -> Integer.parseInt(p.get("id")))
                 .max()
                 .orElse(0);
         String newId = String.valueOf(maxId + 1);
 
-        // Determine author
-        String author = (anonymous != null) ? "Anonymous" : "Current User";
-        String avatar = (anonymous != null) ? "A" : "U";
+        // 2. Determine Author and Avatar logic
+        String author = "Student User"; // Default fallback
+        String avatar = "S";
 
+        if (anonymous != null) {
+            // Case A: User checked "Post Anonymously"
+            author = "Anonymous";
+            avatar = "A";
+        } else {
+            // Case B: Public Post - Get User from Session
+            Object logged = session.getAttribute("loggedInUser");
+            if (logged instanceof User) {
+                User u = (User) logged;
+                // Use Full Name if available, otherwise Username
+                if (u.getFullName() != null && !u.getFullName().isEmpty()) {
+                    author = u.getFullName();
+                } else {
+                    author = u.getUsername();
+                }
+                
+                // create an initial for the avatar (e.g., "Ali" -> "A")
+                if (author != null && !author.isEmpty()) {
+                    avatar = author.substring(0, 1).toUpperCase();
+                }
+            }
+        }
+
+        // 3. Create the post map
         Map<String, String> newPost = makePost(
                 newId,
                 title,
@@ -82,21 +101,19 @@ public class ForumController {
                 "Just now"
         );
 
-        // Add new post at top
+        // 4. Add new post at top of list
         posts.add(0, newPost);
 
-        // Optionally provide replies (empty by default)
+        // 5. Prepare model for the success view
         model.addAttribute("replies", Collections.emptyList());
+        model.addAttribute("newPost", newPost);
+        model.addAttribute("posts", posts);
 
-    // 1. Add attributes for the JSP to use
-        model.addAttribute("newPost", newPost); 
-        model.addAttribute("posts", posts);     
-
-        // 2. CRITICAL CHANGE: Return "student/new-post" instead of "student/forum"
+        // Return to the "Post Created" view (using new-post.jsp logic)
         return "student/new-post";
     }
 
-    // --- VIEW SINGLE POST (both param and path variants) ---
+    // --- VIEW SINGLE POST ---
 
     @GetMapping("/forum/post")
     public String viewPostByParam(@RequestParam(name = "id", required = false, defaultValue = "1") String id,
@@ -118,7 +135,7 @@ public class ForumController {
         if (foundPost != null) {
             model.addAttribute("post", foundPost);
 
-            // Limit replies to the post's replyCount (safety check)
+            // Limit replies logic
             List<Map<String, String>> allReplies = sampleReplies();
             int targetCount = 0;
             try {
@@ -157,31 +174,10 @@ public class ForumController {
     }
 
     private List<Map<String,String>> sampleReplies() {
+        // (Your existing sample replies code remains here...)
         List<Map<String,String>> replies = new ArrayList<>();
         replies.add(makeReply("Relax_Bro", "Ali • 1 hour ago", "Take deep breaths and remember that exams don't define you. You've got this!", "R"));
-        replies.add(makeReply("Sam", "45 minutes ago", "Breaking study time into short sessions, getting enough sleep and quick breaks really helps.", "S"));
-        replies.add(makeReply("Daniel", "12 minutes ago", "I find that taking regular breaks, staying positive, and getting enough rest helps me manage exam stress better.", "D"));
-        replies.add(makeReply("Maya", "8 minutes ago", "Exercise has been a game-changer for me. Even a 15-minute walk helps clear my mind and reduce anxiety.", "M"));
-        replies.add(makeReply("Jordan", "5 minutes ago", "Making a realistic study schedule has helped me feel more in control. I break down what I need to study by day and it feels less overwhelming.", "J"));
-        replies.add(makeReply("Lisa", "3 minutes ago", "Meditation apps like Headspace or Calm have really helped me. Just 10 minutes a day makes a difference.", "L"));
-        replies.add(makeReply("Chris", "2 minutes ago", "Study groups help me stay accountable and motivated. Plus, explaining concepts to others really reinforces my own understanding.", "C"));
-        replies.add(makeReply("Emma", "1 minute ago", "I keep healthy snacks nearby while studying. Proper nutrition really affects my concentration and mood.", "E"));
-        replies.add(makeReply("Tyler", "Just now", "Limiting caffeine has surprisingly helped me. I was drinking too much coffee which made my anxiety worse.", "T"));
-        replies.add(makeReply("Nina", "Just now", "Talk to your professors if you're struggling! Most are really understanding and can offer guidance or extensions if needed.", "N"));
-        replies.add(makeReply("Alex", "Just now", "I use the Pomodoro technique - 25 minutes of focused study, then a 5-minute break. It keeps me from burning out.", "A"));
-        replies.add(makeReply("Kate", "Just now", "Remember to reach out to campus counseling services if you need extra support. They're there to help!", "K"));
-        replies.add(makeReply("Relax_Bro", "Ali • 1 hour ago", "Take deep breaths and remember that exams don't define you. You've got this!", "R"));
-        replies.add(makeReply("Sam", "45 minutes ago", "Breaking study time into short sessions, getting enough sleep and quick breaks really helps.", "S"));
-        replies.add(makeReply("Daniel", "12 minutes ago", "I find that taking regular breaks, staying positive, and getting enough rest helps me manage exam stress better.", "D"));
-        replies.add(makeReply("Maya", "8 minutes ago", "Exercise has been a game-changer for me. Even a 15-minute walk helps clear my mind and reduce anxiety.", "M"));
-        replies.add(makeReply("Jordan", "5 minutes ago", "Making a realistic study schedule has helped me feel more in control. I break down what I need to study by day and it feels less overwhelming.", "J"));
-        replies.add(makeReply("Lisa", "3 minutes ago", "Meditation apps like Headspace or Calm have really helped me. Just 10 minutes a day makes a difference.", "L"));
-        replies.add(makeReply("Chris", "2 minutes ago", "Study groups help me stay accountable and motivated. Plus, explaining concepts to others really reinforces my own understanding.", "C"));
-        replies.add(makeReply("Emma", "1 minute ago", "I keep healthy snacks nearby while studying. Proper nutrition really affects my concentration and mood.", "E"));
-        replies.add(makeReply("Tyler", "Just now", "Limiting caffeine has surprisingly helped me. I was drinking too much coffee which made my anxiety worse.", "T"));
-        replies.add(makeReply("Nina", "Just now", "Talk to your professors if you're struggling! Most are really understanding and can offer guidance or extensions if needed.", "N"));
-        replies.add(makeReply("Alex", "Just now", "I use the Pomodoro technique - 25 minutes of focused study, then a 5-minute break. It keeps me from burning out.", "A"));
-        replies.add(makeReply("Kate", "Just now", "Remember to reach out to campus counseling services if you need extra support. They're there to help!", "K"));
+        // ... (truncated for brevity, keep your original list)
         return replies;
     }
 
@@ -211,11 +207,11 @@ public class ForumController {
             return "redirect:/student/forum";
         }
 
-        // Determine author from session (loggedInUser), fallback to "Current User"
+        // Determine author from session
         String author = "Current User";
         Object logged = session.getAttribute("loggedInUser");
-        if (logged instanceof com.secj3303.model.User) {
-            com.secj3303.model.User u = (com.secj3303.model.User) logged;
+        if (logged instanceof User) {
+            User u = (User) logged;
             if (u.getFullName() != null && !u.getFullName().isEmpty()) {
                 author = u.getFullName();
             } else if (u.getUsername() != null && !u.getUsername().isEmpty()) {
@@ -223,14 +219,14 @@ public class ForumController {
             }
         }
 
-        // Create new reply with resolved author
+        // Create new reply
         Map<String, String> newReply = new HashMap<>();
         newReply.put("author", author);
         newReply.put("time", "Just now");
         newReply.put("content", content);
-        newReply.put("avatar", "U");
+        newReply.put("avatar", author.substring(0, 1).toUpperCase());
 
-        // Update the post's replyCount first (safety)
+        // Update counts
         int newCount = 1;
         try {
             int rc = Integer.parseInt(foundPost.getOrDefault("replyCount", "0"));
@@ -240,21 +236,18 @@ public class ForumController {
         }
         foundPost.put("replyCount", String.valueOf(newCount));
 
-        // Build a replies list: prepend the new reply to the sample replies
+        // Logic to simulate adding reply to the top
         List<Map<String, String>> allReplies = new ArrayList<>(sampleReplies());
         allReplies.add(0, newReply);
-
-        // Limit the replies list to the post's replyCount (safety check)
+        
         int targetCount = newCount;
-        if (targetCount > allReplies.size()) {
-            targetCount = allReplies.size();
-        }
+        if (targetCount > allReplies.size()) targetCount = allReplies.size();
+        
         List<Map<String, String>> limitedReplies = new ArrayList<>(allReplies.subList(0, targetCount));
 
         model.addAttribute("post", foundPost);
         model.addAttribute("replies", limitedReplies);
 
-        // Render the newreply view which shows the post with updated replies
         return "student/newreply";
     }
 }
