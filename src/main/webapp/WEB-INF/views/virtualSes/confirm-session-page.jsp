@@ -152,6 +152,7 @@
 </head>
 <body>
 
+<jsp:include file="/WEB-INF/views/includes/mhp-navbar.jsp" />
 <h1>Manage Upcoming Sessions</h1>
 <p>Manage your schedule and upcoming counseling sessions</p>
 
