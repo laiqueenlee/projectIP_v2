@@ -91,7 +91,7 @@ public class ForumController {
                 newId,
                 title,
                 author,
-                category,
+                category, 
                 content,
                 avatar,
                 "",
